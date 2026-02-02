@@ -1,0 +1,4240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti, mi amor 💗</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rosa-principal: #ffc9d9;
+            --rosa-claro: #ffe5ed;
+            --rosa-oscuro: #ffb3c9;
+            --rosa-intenso: #ff8fb3;
+            --blanco: #ffffff;
+            --crema: #fff5f7;
+            --lila: #e6d5ff;
+            --dorado-suave: #ffd4a3;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            background: var(--rosa-principal);
+            color: #6b4d57;
+        }
+
+        /* ===== ANIMACIONES GLOBALES ===== */
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes brillar {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes caerCorazon {
+            0% { 
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulso {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes escribir {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes parpadeo {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ===== CORAZONES FLOTANTES BACKGROUND ===== */
+        .corazones-fondo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .corazon-flotante {
+            position: absolute;
+            font-size: 20px;
+            animation: caerCorazon linear infinite;
+            opacity: 0;
+        }
+
+        /* ===== ESTRELLAS DECORATIVAS ===== */
+        .estrella {
+            position: absolute;
+            font-size: 16px;
+            animation: brillar 3s infinite;
+        }
+
+        /* ===== PANTALLA DE CARGA / BIENVENIDA ===== */
+        .pantalla-bienvenida {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffc9d9 0%, #ffe5ed 50%, #ffd4e5 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s, transform 1s;
+            padding: 20px;
+        }
+
+        .pantalla-bienvenida.ocultar {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        .personaje-bienvenida {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            animation: flotar 3s ease-in-out infinite;
+        }
+
+        .personaje {
+            font-size: 80px;
+            filter: drop-shadow(0 10px 20px rgba(255, 179, 201, 0.4));
+        }
+
+        .titulo-principal {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: #ff8fb3;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .subtitulo-bienvenida {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #b88090;
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 2s ease-out 0.5s backwards;
+        }
+
+        .boton-entrar {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #ff8fb3, #ffc9d9);
+            border: none;
+            border-radius: 50px;
+            padding: 20px 60px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.4);
+            transition: all 0.3s ease;
+            animation: pulso 2s ease-in-out infinite;
+        }
+
+        .boton-entrar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.6);
+        }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
+        .contenido-principal {
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+            padding-top: 100px;
+        }
+
+        .contenido-principal.mostrar {
+            opacity: 1;
+        }
+
+        .seccion {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        /* ===== SECCIÓN CARTA PRINCIPAL ===== */
+        .carta-contenedor {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(255, 143, 179, 0.3);
+            position: relative;
+            border: 3px solid var(--rosa-claro);
+        }
+
+        .carta-contenedor::before {
+            content: '🌸';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            font-size: 40px;
+        }
+
+        .carta-contenedor::after {
+            content: '🌸';
+            position: absolute;
+            bottom: -20px;
+            right: 30px;
+            font-size: 40px;
+        }
+
+        .carta-titulo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #b88090;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .carta-texto {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            line-height: 2;
+            color: #6b4d57;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .carta-firma {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: #ff8fb3;
+            text-align: right;
+            margin-top: 40px;
+        }
+
+        .personajes-carta {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            margin-top: 30px;
+            font-size: 50px;
+        }
+
+        /* ===== SECCIÓN POEMAS ===== */
+        .poemas-titulo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #b88090;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .poemas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .poema-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--rosa-claro);
+            position: relative;
+        }
+
+        .poema-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.4);
+        }
+
+        .poema-card::before {
+            content: '💕';
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            font-size: 30px;
+        }
+
+        .poema-titulo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #ff8fb3;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .poema-preview {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            color: #b88090;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .poema-completo {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #6b4d57;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .poema-card.expandido .poema-completo {
+            max-height: 500px;
+        }
+
+        /* ===== SECCIÓN PERSONAJES ANIMADOS ===== */
+        .personajes-seccion {
+            background: linear-gradient(135deg, #ffe5ed 0%, #ffd4e5 100%);
+        }
+
+        .personajes-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin-bottom: 40px;
+        }
+
+        .personaje-animado {
+            font-size: 100px;
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 10px 20px rgba(255, 143, 179, 0.3));
+        }
+
+        .personaje-1 {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .personaje-2 {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .personajes-container.abrazados .personaje-1 {
+            left: 80px;
+        }
+
+        .personajes-container.abrazados .personaje-2 {
+            right: 80px;
+        }
+
+        .corazon-centro {
+            position: absolute;
+            font-size: 60px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .personajes-container.abrazados .corazon-centro {
+            transform: translate(-50%, -50%) scale(1);
+            animation: pulso 1s ease-in-out infinite;
+        }
+
+        .frase-romantica {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #b88090;
+            text-align: center;
+            margin-top: 30px;
+            min-height: 60px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .frase-romantica.visible {
+            opacity: 1;
+        }
+
+        /* ===== SECCIÓN DETALLES INTERACTIVOS ===== */
+        .detalles-titulo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #b88090;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .detalles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .detalle-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--rosa-claro);
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+        }
+
+        .detalle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.4);
+        }
+
+        .detalle-icono {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .detalle-titulo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #ff8fb3;
+            margin-bottom: 15px;
+        }
+
+        .detalle-texto {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            color: #6b4d57;
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .detalle-card.activo .detalle-texto {
+            max-height: 300px;
+            margin-top: 15px;
+        }
+
+        /* ===== SECCIÓN CIERRE ===== */
+        .cierre-seccion {
+            background: linear-gradient(to bottom, #ffc9d9 0%, #c9b3ff 50%, #9381b8 100%);
+            position: relative;
+        }
+
+        .luna {
+            position: absolute;
+            top: 80px;
+            right: 80px;
+            font-size: 80px;
+            animation: brillar 4s ease-in-out infinite;
+        }
+
+        .personajes-cierre {
+            display: flex;
+            gap: 0;
+            font-size: 100px;
+            margin-bottom: 40px;
+            animation: flotar 4s ease-in-out infinite;
+            filter: drop-shadow(0 15px 30px rgba(147, 129, 184, 0.5));
+        }
+
+        .mensaje-cierre {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .submensaje-cierre {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            color: #ffe5ed;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* ===== MODAL MENSAJES ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 143, 179, 0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.activo {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .modal-contenido {
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: fadeIn 0.7s ease 0.2s backwards;
+        }
+
+        .modal-cerrar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #b88090;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-cerrar:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-texto {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.3rem;
+            line-height: 2;
+            color: #6b4d57;
+            text-align: center;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .personaje-bienvenida {
+                gap: 20px;
+            }
+
+            .personaje {
+                font-size: 60px;
+            }
+
+            .carta-contenedor {
+                padding: 40px 25px;
+            }
+
+            .personajes-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .personaje-animado {
+                font-size: 70px;
+            }
+
+            .luna {
+                top: 40px;
+                right: 40px;
+                font-size: 60px;
+            }
+        }
+
+        /* ===== SCROLL SUAVE ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== MENÚ LATERAL DERECHO ===== */
+        .menu-boton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff8fb3, #ffc9d9);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            z-index: 9998;
+            box-shadow: 0 5px 20px rgba(255, 143, 179, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s ease;
+            animation: pulso 2s ease-in-out infinite;
+        }
+
+        .menu-boton:hover {
+            transform: scale(1.1);
+        }
+
+        .menu-lateral {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(to bottom, #ffe5ed, #ffc9d9);
+            box-shadow: -5px 0 30px rgba(255, 143, 179, 0.3);
+            z-index: 9997;
+            transition: right 0.5s ease;
+            overflow-y: auto;
+            padding: 80px 30px 30px;
+        }
+
+        .menu-lateral.abierto {
+            right: 0;
+        }
+
+        .menu-cerrar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 35px;
+            cursor: pointer;
+            color: #b88090;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-cerrar:hover {
+            transform: rotate(90deg);
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--rosa-claro);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-item:hover {
+            transform: translateX(-10px);
+            box-shadow: 0 5px 20px rgba(255, 143, 179, 0.3);
+        }
+
+        .menu-icono {
+            font-size: 35px;
+        }
+
+        .menu-texto {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            color: #b88090;
+        }
+
+        /* ===== SECCIÓN POEMAS COMPLETOS ===== */
+        .seccion-poemas-completos {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffc9d9 0%, #ffe5ed 100%);
+            z-index: 9996;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-poemas-completos.activa {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .poemas-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .poemas-volver {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border: 2px solid var(--rosa-claro);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 9997;
+        }
+
+        .poemas-volver:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 143, 179, 0.3);
+        }
+
+        .poema-completo-card {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+            border: 3px solid var(--rosa-claro);
+        }
+
+        .poema-completo-titulo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: #ff8fb3;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .poema-completo-texto {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.15rem;
+            line-height: 2.2;
+            color: #6b4d57;
+            text-align: center;
+        }
+
+        /* ===== SECCIÓN PLAYLISTS ===== */
+        .seccion-playlists {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #e6d5ff 0%, #ffc9d9 100%);
+            z-index: 9996;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-playlists.activa {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .playlist-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .playlist-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+            border: 2px solid var(--lila);
+        }
+
+        .playlist-titulo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #b88090;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .playlist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .playlist-item {
+            background: var(--rosa-claro);
+            border-radius: 15px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .playlist-item:hover {
+            transform: translateX(10px);
+            background: var(--rosa-oscuro);
+        }
+
+        .playlist-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .playlist-nombre {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            color: #6b4d57;
+        }
+
+        .playlist-boton {
+            background: linear-gradient(135deg, #ff8fb3, #ffc9d9);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .playlist-boton:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== SECCIÓN ÁLBUM DE FOTOS ===== */
+        .seccion-album {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe5ed 100%);
+            z-index: 9996;
+            overflow: hidden;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-album.activa {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .album-titulo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #ff8fb3;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .carrusel-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carrusel-foto {
+            display: none;
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 143, 179, 0.4);
+            border: 5px solid white;
+            object-fit: cover;
+        }
+
+        .carrusel-foto.activa {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .carrusel-flecha {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border: 3px solid var(--rosa-claro);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carrusel-flecha:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 143, 179, 0.4);
+        }
+
+        .carrusel-flecha-izq {
+            left: -80px;
+        }
+
+        .carrusel-flecha-der {
+            right: -80px;
+        }
+
+        .carrusel-indicadores {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .carrusel-punto {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--rosa-claro);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carrusel-punto.activo {
+            background: var(--rosa-intenso);
+            transform: scale(1.3);
+        }
+
+        .foto-leyenda {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #b88090;
+            text-align: center;
+            margin-top: 20px;
+            min-height: 50px;
+        }
+
+        /* ===== SECCIÓN RAZONES ===== */
+        .seccion-razones {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffd4e5 0%, #ffe5ed 100%);
+            z-index: 9996;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-razones.activa {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .razones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .razon-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+            border: 2px solid var(--rosa-claro);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .razon-card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.4);
+        }
+
+        .razon-numero {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: #ff8fb3;
+            margin-bottom: 15px;
+        }
+
+        .razon-texto {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #6b4d57;
+        }
+
+        /* ===== RESPONSIVE MENU ===== */
+        @media (max-width: 768px) {
+            .menu-lateral {
+                width: 100%;
+                right: -100%;
+            }
+
+            .carrusel-flecha-izq {
+                left: 10px;
+            }
+
+            .carrusel-flecha-der {
+                right: 10px;
+            }
+
+            .carrusel-container {
+                height: 400px;
+            }
+        }
+
+        /* ===== GENERADOR DE CARTAS ALEATORIAS ===== */
+        .seccion-generador {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffd4e5 0%, #ffe5ed 100%);
+            z-index: 9996;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-generador.activa {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .generador-container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(255, 143, 179, 0.3);
+            border: 3px solid var(--rosa-claro);
+            position: relative;
+            text-align: center;
+        }
+
+        .generador-sobre {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: flotar 3s ease-in-out infinite;
+        }
+
+        .generador-titulo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #ff8fb3;
+            margin-bottom: 30px;
+        }
+
+        .carta-generada {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #6b4d57;
+            margin-bottom: 30px;
+            min-height: 200px;
+            text-align: center;
+            padding: 20px;
+            background: var(--rosa-claro);
+            border-radius: 20px;
+        }
+
+        .boton-generar {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #ff8fb3, #ffc9d9);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .boton-generar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.6);
+        }
+
+        /* ===== CARTAS SORPRESA ===== */
+        .seccion-cartas-sorpresa {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #e6d5ff 0%, #ffc9d9 100%);
+            z-index: 9996;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-cartas-sorpresa.activa {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .cartas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .carta-sorpresa-card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+            border: 3px solid var(--lila);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carta-sorpresa-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.4);
+        }
+
+        .carta-sorpresa-card.bloqueada {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .carta-sorpresa-card.bloqueada:hover {
+            transform: none;
+        }
+
+        .carta-icono {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .carta-fecha {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #ff8fb3;
+            margin-bottom: 10px;
+        }
+
+        .carta-descripcion {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            color: #b88090;
+            text-align: center;
+        }
+
+        .carta-contenido {
+            display: none;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #6b4d57;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .carta-sorpresa-card.abierta .carta-contenido {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .carta-sorpresa-card.abierta .carta-icono {
+            animation: pulso 1s ease-in-out;
+        }
+
+        .candado {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+        }
+
+        .etiqueta-especial {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: linear-gradient(135deg, #ff8fb3, #ffc9d9);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255, 143, 179, 0.4);
+            animation: pulso 2s ease-in-out infinite;
+        }
+
+        /* ===== SECCIÓN CHISTES ===== */
+        .seccion-chistes {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffd4e5 100%);
+            z-index: 9996;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+        }
+
+        .seccion-chistes.activa {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .chistes-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .chiste-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(255, 143, 179, 0.2);
+            border: 2px solid var(--rosa-claro);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chiste-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 143, 179, 0.4);
+        }
+
+        .chiste-numero {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.2rem;
+            color: #ff8fb3;
+        }
+
+        .chiste-pregunta {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #6b4d57;
+            margin-bottom: 15px;
+        }
+
+        .chiste-respuesta {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            color: #b88090;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .chiste-card.revelado .chiste-respuesta {
+            max-height: 200px;
+            margin-top: 10px;
+        }
+
+        .chiste-emoji {
+            font-size: 40px;
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .chiste-instruccion {
+            text-align: center;
+            font-family: 'Quicksand', sans-serif;
+            color: #b88090;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        /* ===== SECCIÓN DIBUJO ===== */
+        .seccion-dibujo {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #1a1a1a;
+            z-index: 9996;
+            overflow: hidden;
+        }
+
+        .seccion-dibujo.activa {
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Top toolbar */
+        .dibujo-top-toolbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .top-tool-btn {
+            background: transparent;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .top-tool-btn:hover {
+            background: rgba(255, 143, 179, 0.2);
+        }
+
+        .top-tool-btn.activo {
+            background: rgba(255, 143, 179, 0.3);
+        }
+
+        /* Main canvas container */
+        .dibujo-workspace {
+            display: flex;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Left toolbar - Brushes */
+        .left-toolbar {
+            width: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 5px;
+            gap: 8px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+
+        .brush-btn {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .brush-btn:hover {
+            border-color: #ff8fb3;
+            transform: scale(1.05);
+        }
+
+        .brush-btn.activo {
+            border-color: #ff8fb3;
+            border-width: 3px;
+            background: rgba(255, 143, 179, 0.1);
+        }
+
+        .brush-icon {
+            width: 35px;
+            height: 35px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Canvas area */
+        .canvas-workspace {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #canvasDibujo {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            cursor: crosshair;
+        }
+
+        /* Right toolbar - Color and options */
+        .right-toolbar {
+            width: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 5px;
+            gap: 15px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.1);
+        }
+
+        .add-color-btn {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+
+        .add-color-btn:hover {
+            border-color: #ff8fb3;
+            color: #ff8fb3;
+        }
+
+        /* Bottom right panel */
+        .bottom-right-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 90px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 120px;
+        }
+
+        .panel-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .panel-item:hover {
+            background: rgba(255, 143, 179, 0.1);
+        }
+
+        .panel-item-icon {
+            font-size: 20px;
+        }
+
+        .panel-item-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            color: #6b4d57;
+        }
+
+        .color-wheel {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(
+                red, yellow, lime, aqua, blue, magenta, red
+            );
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Color picker modal */
+        .color-picker-modal {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 200;
+        }
+
+        .color-picker-modal.activo {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .color-palette-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 40px);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .palette-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .palette-color:hover {
+            transform: scale(1.1);
+            border-color: #ff8fb3;
+        }
+
+        .palette-color.selected {
+            border-color: #ff8fb3;
+            border-width: 3px;
+        }
+
+        /* Brush size slider */
+        .brush-size-container {
+            position: absolute;
+            left: 90px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .brush-size-container.activo {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .size-slider {
+            width: 200px;
+            margin: 10px 0;
+        }
+
+        .size-preview {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .size-dot {
+            background: #000;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .left-toolbar,
+            .right-toolbar {
+                width: 60px;
+            }
+
+            .brush-btn,
+            .color-circle {
+                width: 45px;
+                height: 45px;
+            }
+
+            .bottom-right-panel {
+                right: 70px;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Corazones flotantes de fondo -->
+    <div class="corazones-fondo" id="corazonesFondo"></div>
+
+    <!-- Pantalla de Bienvenida -->
+    <div class="pantalla-bienvenida" id="pantallaBienvenida">
+        <div class="estrella" style="top: 10%; left: 15%;">✨</div>
+        <div class="estrella" style="top: 20%; right: 20%;">⭐</div>
+        <div class="estrella" style="bottom: 30%; left: 25%;">💫</div>
+        <div class="estrella" style="bottom: 20%; right: 15%;">✨</div>
+        
+        <div class="personaje-bienvenida">
+            <span class="personaje">🧸</span>
+            <span class="personaje">🐰</span>
+        </div>
+        
+        <h1 class="titulo-principal">Para ti, mi amor 💗</h1>
+        <p class="subtitulo-bienvenida">Este pequeño mundo existe solo porque tú existes.</p>
+        
+        <button class="boton-entrar" onclick="entrar()">Entrar 💕</button>
+    </div>
+
+    <!-- Botón del Menú -->
+    <button class="menu-boton" id="menuBoton" onclick="toggleMenu()" style="display: none;">💝</button>
+
+    <!-- Menú Lateral -->
+    <div class="menu-lateral" id="menuLateral">
+        <span class="menu-cerrar" onclick="toggleMenu()">×</span>
+        
+        <div class="menu-item" onclick="abrirPoemas()">
+            <span class="menu-icono">📖</span>
+            <span class="menu-texto">Poemas para ti</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirGenerador()">
+            <span class="menu-icono">💌</span>
+            <span class="menu-texto">Carta del día</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirCartasSorpresa()">
+            <span class="menu-icono">🎁</span>
+            <span class="menu-texto">Cartas sorpresa</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirChistes()">
+            <span class="menu-icono">😂</span>
+            <span class="menu-texto">Para hacerte reír</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirDibujo()">
+            <span class="menu-icono">🎨</span>
+            <span class="menu-texto">Para que practiques</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirPlaylists()">
+            <span class="menu-icono">🎵</span>
+            <span class="menu-texto">Nuestras Canciones</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirAlbum()">
+            <span class="menu-icono">📸</span>
+            <span class="menu-texto">Nuestros Momentos</span>
+        </div>
+
+        <div class="menu-item" onclick="abrirRazones()">
+            <span class="menu-icono">💗</span>
+            <span class="menu-texto">Por qué te amo</span>
+        </div>
+
+        <div class="menu-item" onclick="volverInicio()">
+            <span class="menu-icono">🏠</span>
+            <span class="menu-texto">Volver al inicio</span>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="contenido-principal" id="contenidoPrincipal">
+        
+        <!-- Sección: Carta Principal Completa -->
+        <section class="seccion" style="background: linear-gradient(135deg, #ffc9d9 0%, #ffe5ed 100%);">
+            <div class="carta-contenedor" style="max-width: 900px;">
+                <h2 class="carta-titulo">Amor mío,</h2>
+                
+                <p class="carta-texto">
+                    Hoy es tu cumpleaños y no quería que este día pasara sin decirte, con palabras claras y sencillas, lo importante que eres para mí. Celebro tu vida, tu existencia, todo lo que eres y todo lo que llevas dentro. Me alegra profundamente saber que el mundo te tiene un año más, y que yo tengo la fortuna de compartir este tiempo contigo.
+                </p>
+                
+                <p class="carta-firma">Con todo mi amor, 💗</p>
+                
+                <div class="personajes-carta">
+                    <span>🐱</span>
+                    <span>🎂</span>
+                    <span>🐰</span>
+                </div>
+            </div>
+            
+            <!-- Poemas en la misma sección -->
+            <div style="margin-top: 60px; max-width: 900px; width: 100%;">
+                <h2 class="poemas-titulo">Poemas que nacen por ti 🌹</h2>
+                
+                <div class="poemas-grid">
+                    <div class="poema-card" onclick="togglePoema(this)">
+                        <h3 class="poema-titulo">Cuando sonríes</h3>
+                        <p class="poema-preview">Un amor que desarma,<br>murmuelos que acarician y se<br>quedan en mi mundo paraíso.</p>
+                    </div>
+
+                    <div class="poema-card" onclick="togglePoema(this)">
+                        <h3 class="poema-titulo">Te elijo</h3>
+                        <p class="poema-preview">Entre todas las personas,<br>del mundo, hoy e siempre,<br>te elijo a ti.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cositas Especiales en la misma sección -->
+            <div style="margin-top: 60px; max-width: 900px; width: 100%;">
+                <h2 class="detalles-titulo">Cositas especiales para ti 💝✨</h2>
+                
+                <div class="detalles-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="detalle-card" onclick="toggleDetalle(this)">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="detalle-icono" style="margin: 0; font-size: 40px;">🐰</div>
+                            <h3 class="detalle-titulo" style="margin: 0; font-size: 1.2rem; text-align: left;">Escúchame<br><span style="font-size: 0.85rem; color: #b88090;">cuando me necesites</span></h3>
+                        </div>
+                        <div class="detalle-texto">
+                            Siempre estaré aquí para ti. En los momentos difíciles, cuando te sientas solo o perdido, recuerda que mi amor te acompaña. Cierra los ojos, respira profundo, y siente que estoy contigo. No estás solo, nunca lo estarás. Te amo con todo mi corazón.
+                        </div>
+                    </div>
+
+                    <div class="detalle-card" onclick="toggleDetalle(this)">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="detalle-icono" style="margin: 0; font-size: 40px;">🧸</div>
+                            <h3 class="detalle-titulo" style="margin: 0; font-size: 1.2rem; text-align: left;">Prometo cuidarte</h3>
+                        </div>
+                        <div class="detalle-texto">
+                            Prometo estar ahí en tus mejores días y en los más difíciles. Prometo escucharte, apoyarte, y amarte sin condiciones. Prometo cuidar tu corazón como el tesoro más preciado, porque eso es exactamente lo que es para mí. Eres mi todo.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mensaje Final en la misma sección -->
+            <div style="margin-top: 80px; text-align: center;">
+                <div style="display: flex; justify-content: center; gap: 10px; font-size: 60px; margin-bottom: 30px;">
+                    <span>🧸</span>
+                    <span>💗</span>
+                    <span>🐰</span>
+                </div>
+                
+                <p style="font-family: 'Dancing Script', cursive; font-size: 2rem; color: #b88090; margin-bottom: 10px;">
+                    Gracias por llegar a mi vida.
+                </p>
+                <p style="font-family: 'Dancing Script', cursive; font-size: 2rem; color: #b88090; margin-bottom: 20px;">
+                    Este lugar siempre será tuyo.
+                </p>
+                
+                <p style="font-family: 'Quicksand', sans-serif; font-size: 1.1rem; color: #b88090; font-style: italic;">
+                    Te amo+hoy mañana y<br>cuando leas esto otra vez.
+                </p>
+                
+                <div class="luna" style="position: relative; top: auto; right: auto; margin-top: 30px; display: inline-block;">🌙</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Sección: Poemas Completos -->
+    <div class="seccion-poemas-completos" id="seccionPoemas">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionPoemas')">←</div>
+        
+        <div class="poemas-header">
+            <h2 class="poemas-titulo" style="font-size: 3rem;">Poemas que escribí para ti 📖💕</h2>
+            <p style="font-family: 'Quicksand', sans-serif; color: #b88090; font-size: 1.1rem;">
+                Cada palabra escrita pensando en ti
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu risa es mi hogar</h3>
+            <p class="poema-completo-texto">
+                Cuando ríes, el universo conspira,<br>
+                las estrellas bailan en sincronía,<br>
+                y mi corazón encuentra su razón de ser.<br><br>
+                
+                Tu risa no es solo un sonido,<br>
+                es la melodía que cura mis heridas,<br>
+                la luz que ilumina mis días grises,<br>
+                el recordatorio de que todo estará bien.<br><br>
+                
+                En cada carcajada tuya encuentro paz,<br>
+                en cada sonrisa descubro un nuevo motivo<br>
+                para enamorarme de ti una vez más.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Eres mi siempre</h3>
+            <p class="poema-completo-texto">
+                No sé qué hice en esta vida<br>
+                para merecer tu amor,<br>
+                pero cada día agradezco<br>
+                que el destino nos haya cruzado.<br><br>
+                
+                Eres mi calma en la tormenta,<br>
+                mi fuerza cuando flaqueo,<br>
+                mi alegría en los momentos simples,<br>
+                y mi esperanza en los difíciles.<br><br>
+                
+                Contigo aprendí que el amor verdadero<br>
+                no es perfecto, pero es real,<br>
+                no grita, pero se siente profundo,<br>
+                no promete eternidad, pero la construye día a día.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">En tus ojos</h3>
+            <p class="poema-completo-texto">
+                Hay un universo en tus ojos<br>
+                que me invita a perderme,<br>
+                un refugio donde puedo ser yo mismo<br>
+                sin miedo a ser juzgado.<br><br>
+                
+                Cuando me miras, todo cobra sentido,<br>
+                las dudas se desvanecen,<br>
+                los miedos se alejan,<br>
+                y solo queda la certeza<br>
+                de que contigo estoy donde debo estar.<br><br>
+                
+                Tus ojos hablan un idioma<br>
+                que solo mi corazón entiende,<br>
+                y cada mirada es una promesa<br>
+                de que esto es para siempre.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Pequeños momentos</h3>
+            <p class="poema-completo-texto">
+                No necesito grandes gestos<br>
+                ni palabras elaboradas,<br>
+                me basta con los pequeños momentos:<br><br>
+                
+                Tu mano buscando la mía sin razón,<br>
+                tu cabeza en mi hombro cuando estás cansado,<br>
+                esa sonrisa que guardas solo para mí,<br>
+                el silencio cómodo que compartimos.<br><br>
+                
+                En esos instantes sin pretensión<br>
+                encuentro la verdadera magia del amor,<br>
+                porque no está en lo extraordinario,<br>
+                sino en lo cotidiano que construimos juntos.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Contigo aprendí</h3>
+            <p class="poema-completo-texto">
+                Contigo aprendí que amar<br>
+                no es poseer, sino liberar,<br>
+                no es cambiar, sino aceptar,<br>
+                no es exigir, sino dar.<br><br>
+                
+                Aprendí que el amor duele,<br>
+                pero vale cada lágrima,<br>
+                que la vulnerabilidad no es debilidad,<br>
+                sino el mayor acto de valentía.<br><br>
+                
+                Contigo descubrí que el amor verdadero<br>
+                no necesita ser entendido por nadie más,<br>
+                solo vivido por nosotros dos,<br>
+                día a día, momento a momento.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Mi lugar favorito</h3>
+            <p class="poema-completo-texto">
+                Mi lugar favorito en el mundo<br>
+                no está en ningún mapa,<br>
+                no tiene dirección ni coordenadas,<br>
+                pero es el más real que conozco.<br><br>
+                
+                Es ese espacio entre tus brazos,<br>
+                donde el mundo exterior desaparece,<br>
+                donde solo existimos tú y yo,<br>
+                donde todo tiene sentido.<br><br>
+                
+                Ahí me siento seguro, amado, completo,<br>
+                ahí soy simplemente yo,<br>
+                y tú eres simplemente tú,<br>
+                y eso es más que suficiente.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu voz</h3>
+            <p class="poema-completo-texto">
+                Tu voz es mi melodía favorita,<br>
+                la canción que quiero escuchar<br>
+                en las mañanas al despertar<br>
+                y en las noches antes de dormir.<br><br>
+                
+                Cuando hablas, todo lo demás calla,<br>
+                el ruido del mundo se detiene,<br>
+                y solo existe el sonido de tus palabras<br>
+                acariciando mi alma.<br><br>
+                
+                Tu voz me calma en las tormentas,<br>
+                me alegra en los días grises,<br>
+                me acompaña en la soledad,<br>
+                y me recuerda por qué vale la pena amar.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando no estás</h3>
+            <p class="poema-completo-texto">
+                Cuando no estás, el mundo se siente vacío,<br>
+                los colores pierden su brillo,<br>
+                la música deja de sonar igual,<br>
+                y el tiempo se arrastra lento.<br><br>
+                
+                Tu ausencia me enseña<br>
+                cuánto significas para mí,<br>
+                cómo cada parte de mi día<br>
+                está marcada por tu presencia.<br><br>
+                
+                Pero también me recuerda<br>
+                que lo nuestro es tan fuerte<br>
+                que ni la distancia puede separarnos,<br>
+                porque siempre vives en mi corazón.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tus manos</h3>
+            <p class="poema-completo-texto">
+                En tus manos encuentro refugio,<br>
+                seguridad, calidez, amor.<br>
+                Cuando tomas las mías<br>
+                siento que todo estará bien.<br><br>
+                
+                Tus manos me guían en la oscuridad,<br>
+                me sostienen cuando caigo,<br>
+                me acarician con ternura,<br>
+                y me abrazan con fuerza.<br><br>
+                
+                En cada toque hay una promesa,<br>
+                en cada caricia hay un te quiero,<br>
+                y en cada abrazo hay un hogar<br>
+                que nunca quiero abandonar.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Amanecer contigo</h3>
+            <p class="poema-completo-texto">
+                Cada amanecer a tu lado<br>
+                es un nuevo comienzo,<br>
+                una nueva oportunidad<br>
+                de amarte un poco más.<br><br>
+                
+                Ver el sol pintando tu rostro,<br>
+                escuchar tu respiración tranquila,<br>
+                sentir tu calor junto a mí,<br>
+                me recuerda que elegí bien.<br><br>
+                
+                No hay nada más hermoso<br>
+                que despertar y saber<br>
+                que compartiré este día contigo,<br>
+                y todos los que vengan después.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu nombre</h3>
+            <p class="poema-completo-texto">
+                Tu nombre es mi palabra favorita,<br>
+                la que pronuncio con más amor,<br>
+                la que llena mi boca de dulzura,<br>
+                la que mi corazón susurra constantemente.<br><br>
+                
+                Decir tu nombre es como rezar,<br>
+                es invocar todo lo bueno que tengo,<br>
+                es recordar por qué sonrío,<br>
+                es sentir que todo vale la pena.<br><br>
+                
+                Tu nombre está grabado en mi alma,<br>
+                tatuado en mi corazón,<br>
+                y resonará en mi mente<br>
+                hasta el último latido.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Creciendo juntos</h3>
+            <p class="poema-completo-texto">
+                Nuestro amor no es estático,<br>
+                crece y evoluciona cada día,<br>
+                como un árbol que hunde sus raíces<br>
+                más profundo con el tiempo.<br><br>
+                
+                Hemos superado tormentas juntos,<br>
+                celebrado victorias compartidas,<br>
+                aprendido de nuestros errores,<br>
+                y nos hemos vuelto más fuertes.<br><br>
+                
+                Cada desafío nos acerca más,<br>
+                cada día nos enseña algo nuevo,<br>
+                y cada momento confirma<br>
+                que elegí a la persona correcta.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">En el silencio</h3>
+            <p class="poema-completo-texto">
+                Hay veces que no necesitamos palabras,<br>
+                el silencio entre nosotros habla más,<br>
+                comunica lo que las palabras no pueden,<br>
+                expresa lo que el corazón siente.<br><br>
+                
+                En esos momentos de quietud<br>
+                siento tu presencia más que nunca,<br>
+                entiendo tu alma sin necesidad de voz,<br>
+                y me siento completamente conectado contigo.<br><br>
+                
+                El silencio compartido es un lenguaje<br>
+                que solo nosotros hablamos,<br>
+                una conversación sin sonidos<br>
+                donde nos decimos todo sin decir nada.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu esencia</h3>
+            <p class="poema-completo-texto">
+                Tu esencia me embriaga,<br>
+                ese aroma único que solo tú tienes,<br>
+                esa energía que llena el espacio<br>
+                cuando entras en una habitación.<br><br>
+                
+                Es en los detalles donde te encuentro:<br>
+                en la forma en que ríes,<br>
+                en cómo piensas las cosas,<br>
+                en tu manera particular de ver el mundo.<br><br>
+                
+                Amo tu esencia, tu autenticidad,<br>
+                todo lo que te hace único,<br>
+                porque no amo solo lo que haces,<br>
+                amo quién eres en lo más profundo.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestra historia</h3>
+            <p class="poema-completo-texto">
+                Cada pareja tiene su historia,<br>
+                pero la nuestra es mi favorita,<br>
+                con sus altibajos, sus giros inesperados,<br>
+                sus momentos de risa y de lágrimas.<br><br>
+                
+                Cada capítulo ha valido la pena,<br>
+                cada página ha sido necesaria,<br>
+                porque nos ha traído aquí,<br>
+                a este momento, a este amor.<br><br>
+                
+                Y aunque no sé cómo terminará,<br>
+                sé que quiero escribirla contigo,<br>
+                página tras página, día tras día,<br>
+                hasta el último renglón.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu imperfección perfecta</h3>
+            <p class="poema-completo-texto">
+                No eres perfecto, y eso me encanta,<br>
+                porque en tus imperfecciones<br>
+                encuentro tu humanidad,<br>
+                tu verdadera esencia.<br><br>
+                
+                Amo tus manías, tus rarezas,<br>
+                esos pequeños defectos que solo yo conozco,<br>
+                porque me recuerdan que eres real,<br>
+                que eres humano, que eres tú.<br><br>
+                
+                La perfección es aburrida,<br>
+                pero tú eres fascinante,<br>
+                complejo, profundo, auténtico,<br>
+                y eso es infinitamente mejor.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando sonríes por mí</h3>
+            <p class="poema-completo-texto">
+                Hay sonrisas que regalas al mundo,<br>
+                pero hay una que guardas solo para mí,<br>
+                esa que nace desde lo más profundo,<br>
+                esa que ilumina tu rostro de manera especial.<br><br>
+                
+                Cuando sonríes por mí,<br>
+                todo mi esfuerzo vale la pena,<br>
+                todos mis días cobran sentido,<br>
+                y me siento el más afortunado del mundo.<br><br>
+                
+                Esa sonrisa es mi tesoro,<br>
+                mi recompensa diaria,<br>
+                la razón por la que hago lo que hago,<br>
+                y haría cualquier cosa por verla siempre.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Mi compañero</h3>
+            <p class="poema-completo-texto">
+                No solo eres mi amor,<br>
+                eres mi compañero de aventuras,<br>
+                mi cómplice en travesuras,<br>
+                mi socio en este viaje llamado vida.<br><br>
+                
+                Contigo las cargas son más ligeras,<br>
+                porque las compartimos,<br>
+                las alegrías son más grandes,<br>
+                porque las celebramos juntos.<br><br>
+                
+                Eres el equipo que elegí,<br>
+                el jugador con quien quiero ganar,<br>
+                y aunque perdamos a veces,<br>
+                contigo siempre se siente como victoria.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Eternidad</h3>
+            <p class="poema-completo-texto">
+                La eternidad no es un tiempo infinito,<br>
+                es un momento que se siente completo,<br>
+                es ese instante en el que todo encaja,<br>
+                en el que no quieres estar en ningún otro lugar.<br><br>
+                
+                Contigo he vivido muchas eternidades:<br>
+                en cada beso que parece no terminar,<br>
+                en cada abrazo que desearía fuera eterno,<br>
+                en cada mirada que dice más que mil palabras.<br><br>
+                
+                La eternidad está en los segundos contigo,<br>
+                no en los años sin ti,<br>
+                porque un momento a tu lado<br>
+                vale más que una vida entera sin ti.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Mi refugio</h3>
+            <p class="poema-completo-texto">
+                Cuando el mundo es demasiado ruidoso,<br>
+                cuando la vida se vuelve abrumadora,<br>
+                cuando necesito escapar del caos,<br>
+                tú eres mi refugio.<br><br>
+                
+                En tu presencia encuentro paz,<br>
+                en tus palabras hallo consuelo,<br>
+                en tus brazos descubro protección,<br>
+                en tu amor encuentro hogar.<br><br>
+                
+                No necesito escapar a lugares lejanos,<br>
+                no necesito vacaciones ni descansos,<br>
+                solo necesito estar contigo<br>
+                para sentirme completamente renovado.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cada versión de ti</h3>
+            <p class="poema-completo-texto">
+                Amo cada versión de ti:<br>
+                la que ríe sin parar,<br>
+                la que llora cuando está triste,<br>
+                la que se enoja por tonterías.<br><br>
+                
+                Amo al tú de las mañanas,<br>
+                recién despierto y vulnerable,<br>
+                y al tú de las noches,<br>
+                cansado pero sonriente.<br><br>
+                
+                Amo tu felicidad y tu tristeza,<br>
+                tu fuerza y tu debilidad,<br>
+                porque cada faceta de ti<br>
+                es parte del todo que amo.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestro futuro</h3>
+            <p class="poema-completo-texto">
+                Cuando pienso en el futuro,<br>
+                no veo solo días y años,<br>
+                veo momentos contigo,<br>
+                experiencias por vivir juntos.<br><br>
+                
+                Veo viajes por hacer,<br>
+                sueños por cumplir,<br>
+                desafíos por superar,<br>
+                y amor por construir.<br><br>
+                
+                El futuro me emociona<br>
+                porque sé que estarás en él,<br>
+                y cualquier destino es perfecto<br>
+                si llegamos juntos.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Gracias</h3>
+            <p class="poema-completo-texto">
+                Gracias por amarme en mis días difíciles,<br>
+                cuando ni yo mismo me soporto,<br>
+                gracias por ver en mí<br>
+                lo que a veces olvido que está ahí.<br><br>
+                
+                Gracias por tu paciencia infinita,<br>
+                por tu comprensión sin límites,<br>
+                por tu apoyo incondicional,<br>
+                por tu amor que no pide nada a cambio.<br><br>
+                
+                Gracias por existir,<br>
+                por cruzarte en mi camino,<br>
+                por elegirme cada día,<br>
+                y por hacer de mi vida algo hermoso.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Solo tú</h3>
+            <p class="poema-completo-texto">
+                En un mundo de millones de personas,<br>
+                solo tú logras acelerarme el corazón,<br>
+                solo tú consigues sacarme sonrisas,<br>
+                solo tú puedes hacerme sentir así.<br><br>
+                
+                He conocido mucha gente,<br>
+                he vivido muchas experiencias,<br>
+                pero nada se compara<br>
+                con lo que siento cuando estoy contigo.<br><br>
+                
+                Solo tú tienes ese poder sobre mí,<br>
+                esa capacidad de hacerme feliz,<br>
+                y espero que nunca olvides<br>
+                lo especial que eres para mí.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Mi elección</h3>
+            <p class="poema-completo-texto">
+                El amor no es solo un sentimiento,<br>
+                es una elección que hago cada día,<br>
+                es decidir quedarme cuando todo es difícil,<br>
+                es elegir luchar por lo nuestro.<br><br>
+                
+                Y te elijo a ti,<br>
+                una y otra vez,<br>
+                en los días fáciles y en los complicados,<br>
+                cuando todo fluye y cuando hay obstáculos.<br><br>
+                
+                Te elijo porque eres tú,<br>
+                porque lo que tenemos vale la pena,<br>
+                porque no quiero a nadie más,<br>
+                porque eres mi elección hoy y siempre.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Eres suficiente</h3>
+            <p class="poema-completo-texto">
+                A veces el mundo te hará dudar,<br>
+                te dirá que no eres suficiente,<br>
+                que necesitas ser más, hacer más,<br>
+                tener más para ser valioso.<br><br>
+                
+                Pero yo te digo esto:<br>
+                eres más que suficiente,<br>
+                eres exactamente lo que necesito,<br>
+                eres perfecto en tu imperfección.<br><br>
+                
+                No necesitas cambiar nada,<br>
+                no necesitas ser diferente,<br>
+                porque tal como eres<br>
+                eres todo lo que siempre quise.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Para siempre</h3>
+            <p class="poema-completo-texto">
+                No sé qué nos depare el futuro,<br>
+                no puedo predecir lo que vendrá,<br>
+                pero sí sé una cosa con certeza:<br>
+                quiero enfrentarlo contigo.<br><br>
+                
+                Para siempre suena a promesa grande,<br>
+                pero es la que quiero hacerte,<br>
+                porque no imagino mi vida sin ti,<br>
+                porque no quiero un futuro donde no estés.<br><br>
+                
+                Para siempre es poco tiempo<br>
+                para todo lo que quiero darte,<br>
+                pero es todo lo que tengo,<br>
+                y es tuyo, completamente tuyo.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu presencia</h3>
+            <p class="poema-completo-texto">
+                No necesitas hacer nada especial,<br>
+                solo estar ahí es suficiente,<br>
+                tu simple presencia cambia todo,<br>
+                transforma lo ordinario en mágico.<br><br>
+                
+                Cuando estás cerca, el aire es diferente,<br>
+                la habitación se llena de vida,<br>
+                y yo me siento más yo mismo<br>
+                que en cualquier otro momento.<br><br>
+                
+                Tu presencia es mi regalo diario,<br>
+                el que nunca dejo de apreciar,<br>
+                porque contigo todo es mejor,<br>
+                incluso los momentos más simples.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tus abrazos</h3>
+            <p class="poema-completo-texto">
+                Tus abrazos son mi medicina,<br>
+                la cura para todo lo que me aqueja,<br>
+                el bálsamo que necesito<br>
+                cuando el mundo me lastima.<br><br>
+                
+                En tus brazos todo se detiene,<br>
+                los problemas parecen más pequeños,<br>
+                las preocupaciones se alejan,<br>
+                y solo existe este momento contigo.<br><br>
+                
+                No hay nada como un abrazo tuyo,<br>
+                esa sensación de estar en casa,<br>
+                de estar seguro, de estar completo,<br>
+                de estar exactamente donde debo estar.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu forma de amar</h3>
+            <p class="poema-completo-texto">
+                Amas de una manera única,<br>
+                con esa mezcla perfecta<br>
+                de ternura y pasión,<br>
+                de cuidado y libertad.<br><br>
+                
+                Me amas sin intentar cambiarme,<br>
+                sin ponerme condiciones,<br>
+                aceptándome tal como soy,<br>
+                con mis luces y mis sombras.<br><br>
+                
+                Tu forma de amar me ha enseñado<br>
+                lo que es el verdadero amor,<br>
+                ese que no busca perfección,<br>
+                sino conexión auténtica.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando me miras</h3>
+            <p class="poema-completo-texto">
+                Hay algo en tu mirada<br>
+                que desarma todas mis defensas,<br>
+                que me hace vulnerable<br>
+                de la manera más hermosa.<br><br>
+                
+                Cuando me miras así,<br>
+                con esos ojos llenos de amor,<br>
+                siento que puedo conquistar el mundo,<br>
+                o simplemente quedarme aquí contigo.<br><br>
+                
+                Tu mirada me dice lo que tus palabras callan,<br>
+                me muestra lo que tu corazón siente,<br>
+                y en ella encuentro todo lo que necesito saber:<br>
+                que me amas tanto como yo a ti.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestros sueños</h3>
+            <p class="poema-completo-texto">
+                Hablamos de nuestros sueños<br>
+                como si ya fueran realidad,<br>
+                planeamos un futuro juntos<br>
+                con la certeza de que llegará.<br><br>
+                
+                Tus sueños se han vuelto míos,<br>
+                y los míos son tuyos,<br>
+                porque ya no soñamos por separado,<br>
+                soñamos como uno solo.<br><br>
+                
+                Y sé que llegaremos lejos,<br>
+                que lograremos todo lo que nos propongamos,<br>
+                porque cuando dos personas se aman así,<br>
+                no hay sueño demasiado grande.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu apoyo</h3>
+            <p class="poema-completo-texto">
+                Cuando dudo de mí mismo,<br>
+                tú crees en mí,<br>
+                cuando pienso en rendirme,<br>
+                tú me das fuerzas para continuar.<br><br>
+                
+                Tu apoyo no es solo palabras,<br>
+                es acción, es presencia,<br>
+                es estar ahí en los momentos difíciles,<br>
+                recordándome de lo que soy capaz.<br><br>
+                
+                Gracias por ser mi mayor fan,<br>
+                mi animador personal,<br>
+                la voz que me dice "tú puedes"<br>
+                cuando más lo necesito escuchar.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">La química entre nosotros</h3>
+            <p class="poema-completo-texto">
+                Hay una química inexplicable<br>
+                que nos une sin esfuerzo,<br>
+                una conexión que trasciende<br>
+                lo físico y lo tangible.<br><br>
+                
+                Nos entendemos sin palabras,<br>
+                nos buscamos sin pensarlo,<br>
+                nos complementamos de maneras<br>
+                que ni nosotros mismos comprendemos.<br><br>
+                
+                Esta química es magia pura,<br>
+                es lo que hace que lo nuestro sea especial,<br>
+                es la razón por la que cuando estamos juntos<br>
+                todo simplemente funciona.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu valentía</h3>
+            <p class="poema-completo-texto">
+                Admiro tu valentía,<br>
+                esa fortaleza que muestras<br>
+                incluso cuando por dentro tiemblas,<br>
+                esa capacidad de seguir adelante.<br><br>
+                
+                Eres más fuerte de lo que crees,<br>
+                más valiente de lo que muestras,<br>
+                y verte enfrentar la vida<br>
+                me inspira a ser mejor cada día.<br><br>
+                
+                Tu valentía no es la ausencia de miedo,<br>
+                es actuar a pesar de él,<br>
+                y eso es lo que más admiro:<br>
+                tu coraje para vivir auténticamente.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tus detalles</h3>
+            <p class="poema-completo-texto">
+                Son los pequeños detalles<br>
+                los que más amo de ti:<br>
+                cómo arrugas la nariz cuando ríes,<br>
+                cómo muerdes tu labio cuando piensas.<br><br>
+                
+                La forma en que dices mi nombre,<br>
+                ese gesto que haces con las manos,<br>
+                tu manera particular de caminar,<br>
+                todos esos detalles que solo yo noto.<br><br>
+                
+                Son esas pequeñas cosas<br>
+                las que te hacen único,<br>
+                las que me enamoran cada día,<br>
+                las que nunca dejaré de admirar.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando bailamos</h3>
+            <p class="poema-completo-texto">
+                Cuando bailamos en la cocina,<br>
+                sin música, sin razón,<br>
+                solo porque sí,<br>
+                esos son mis momentos favoritos.<br><br>
+                
+                No necesitamos una canción,<br>
+                porque llevamos el ritmo por dentro,<br>
+                ese compás que marca nuestro amor,<br>
+                esa melodía que solo nosotros escuchamos.<br><br>
+                
+                En esos bailes improvisados<br>
+                encuentro la verdadera felicidad,<br>
+                esa alegría simple y pura<br>
+                que solo tú puedes darme.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu inteligencia</h3>
+            <p class="poema-completo-texto">
+                Me fascina tu mente,<br>
+                la forma en que piensas,<br>
+                cómo analizas las cosas,<br>
+                cómo encuentras soluciones creativas.<br><br>
+                
+                Nuestras conversaciones me enriquecen,<br>
+                me hacen ver perspectivas nuevas,<br>
+                me desafían a pensar diferente,<br>
+                a crecer como persona.<br><br>
+                
+                Tu inteligencia es sexy,<br>
+                tu manera de ver el mundo es inspiradora,<br>
+                y cada día aprendo algo nuevo<br>
+                solo por estar a tu lado.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestras aventuras</h3>
+            <p class="poema-completo-texto">
+                Cada salida contigo es una aventura,<br>
+                no importa si vamos lejos<br>
+                o simplemente al supermercado,<br>
+                todo es especial cuando estás tú.<br><br>
+                
+                Hemos creado tantos recuerdos juntos,<br>
+                vivido tantas experiencias,<br>
+                y cada una de ellas<br>
+                es un tesoro que guardo en mi corazón.<br><br>
+                
+                No puedo esperar por las aventuras que vienen,<br>
+                por los lugares que conoceremos,<br>
+                por las historias que crearemos,<br>
+                siempre juntos, siempre nosotros.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu bondad</h3>
+            <p class="poema-completo-texto">
+                Tienes un corazón tan puro,<br>
+                tan lleno de bondad,<br>
+                que a veces me pregunto<br>
+                cómo tuve tanta suerte de encontrarte.<br><br>
+                
+                La forma en que tratas a los demás,<br>
+                tu empatía, tu compasión,<br>
+                tu capacidad de ver lo bueno en todos,<br>
+                me hace quererte aún más.<br><br>
+                
+                Tu bondad no es ingenuidad,<br>
+                es una elección consciente,<br>
+                y eso dice mucho de quién eres:<br>
+                una persona extraordinaria.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando cocinas para mí</h3>
+            <p class="poema-completo-texto">
+                Hay amor en cada platillo que preparas,<br>
+                en cada comida que compartimos,<br>
+                y no es solo el sabor lo que disfruto,<br>
+                es el cariño con que lo haces.<br><br>
+                
+                Ver cómo te esfuerzas por complacerme,<br>
+                cómo recuerdas mis favoritos,<br>
+                cómo pones amor en cada detalle,<br>
+                me hace sentir tan amado.<br><br>
+                
+                La cocina es tu lenguaje de amor,<br>
+                y yo lo entiendo perfectamente,<br>
+                porque cada bocado dice "te amo"<br>
+                más claro que cualquier palabra.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu pasión</h3>
+            <p class="poema-completo-texto">
+                Me encanta tu pasión por la vida,<br>
+                esa intensidad con la que vives,<br>
+                cómo te entregas completamente<br>
+                a todo lo que haces.<br><br>
+                
+                Tu pasión es contagiosa,<br>
+                me inspira a vivir más plenamente,<br>
+                a disfrutar cada momento,<br>
+                a no dar nada por sentado.<br><br>
+                
+                Amas con pasión, sueñas con pasión,<br>
+                vives con pasión,<br>
+                y estar a tu lado<br>
+                me hace sentir más vivo que nunca.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestras bromas</h3>
+            <p class="poema-completo-texto">
+                Tenemos chistes internos que nadie más entiende,<br>
+                risas compartidas por tonterías,<br>
+                ese humor único<br>
+                que solo existe entre nosotros.<br><br>
+                
+                Me encanta cómo podemos reír juntos,<br>
+                cómo encontramos diversión en lo cotidiano,<br>
+                cómo incluso en los días difíciles<br>
+                logramos sacarnos una sonrisa.<br><br>
+                
+                La risa es parte esencial de nuestro amor,<br>
+                y espero que nunca dejemos<br>
+                de encontrar razones para reír juntos,<br>
+                porque esa alegría es invaluable.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu creatividad</h3>
+            <p class="poema-completo-texto">
+                Admiro tu creatividad,<br>
+                esa chispa única que tienes,<br>
+                tu capacidad de ver belleza<br>
+                donde otros solo ven lo ordinario.<br><br>
+                
+                Tu mente creativa me fascina,<br>
+                la forma en que piensas fuera de lo común,<br>
+                cómo encuentras soluciones innovadoras,<br>
+                cómo haces arte de lo simple.<br><br>
+                
+                Me siento afortunado<br>
+                de poder ver el mundo a través de tus ojos,<br>
+                de apreciar esa perspectiva única<br>
+                que solo tú puedes ofrecer.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando me cuidas</h3>
+            <p class="poema-completo-texto">
+                Cuando estoy enfermo, tú estás ahí,<br>
+                cuando me siento mal, tú me cuidas,<br>
+                y en esos momentos de vulnerabilidad<br>
+                tu amor brilla más que nunca.<br><br>
+                
+                No es solo lo que haces,<br>
+                es cómo lo haces,<br>
+                con esa ternura infinita,<br>
+                con ese cariño genuino.<br><br>
+                
+                Tus cuidados me hacen sentir seguro,<br>
+                protegido, amado,<br>
+                y me recuerdan que tengo<br>
+                a la mejor persona a mi lado.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu autenticidad</h3>
+            <p class="poema-completo-texto">
+                Eres auténtico en un mundo de fachadas,<br>
+                real en medio de tanta falsedad,<br>
+                y eso es lo que más valoro:<br>
+                que siempre eres tú mismo.<br><br>
+                
+                No finges ser alguien que no eres,<br>
+                no te escondes detrás de máscaras,<br>
+                y esa honestidad me permite<br>
+                amarte por quien realmente eres.<br><br>
+                
+                Tu autenticidad es refrescante,<br>
+                es lo que hace que todo sea real,<br>
+                lo que hace que nuestro amor sea sólido,<br>
+                construido sobre verdad y no sobre ilusiones.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestros planes</h3>
+            <p class="poema-completo-texto">
+                Me encanta planear el futuro contigo,<br>
+                imaginar todo lo que viviremos,<br>
+                soñar con los años que vienen,<br>
+                con las metas que lograremos juntos.<br><br>
+                
+                Cada plan que hacemos<br>
+                es una promesa de continuidad,<br>
+                un compromiso de seguir construyendo<br>
+                esta vida que compartimos.<br><br>
+                
+                No sé si todo saldrá como planeamos,<br>
+                pero sé que lo enfrentaremos juntos,<br>
+                ajustando el rumbo cuando sea necesario,<br>
+                siempre de la mano, siempre unidos.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu espontaneidad</h3>
+            <p class="poema-completo-texto">
+                Amo tu lado espontáneo,<br>
+                esas decisiones de último momento,<br>
+                esas aventuras improvisadas<br>
+                que terminan siendo inolvidables.<br><br>
+                
+                Me enseñas a no planear todo,<br>
+                a dejarme llevar a veces,<br>
+                a vivir el momento<br>
+                sin preocuparme tanto por el mañana.<br><br>
+                
+                Tu espontaneidad le da sabor a nuestra vida,<br>
+                nos mantiene emocionados,<br>
+                nos recuerda que lo mejor<br>
+                a veces es lo inesperado.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Cuando discutimos</h3>
+            <p class="poema-completo-texto">
+                Incluso cuando discutimos,<br>
+                cuando no estamos de acuerdo,<br>
+                cuando las cosas se ponen difíciles,<br>
+                sé que lo superaremos.<br><br>
+                
+                Porque nuestras discusiones no son destructivas,<br>
+                son parte del crecimiento,<br>
+                una oportunidad para entendernos mejor,<br>
+                para fortalecer lo que tenemos.<br><br>
+                
+                Y al final del día,<br>
+                sin importar qué haya pasado,<br>
+                el amor sigue ahí,<br>
+                más fuerte que cualquier desacuerdo.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu perseverancia</h3>
+            <p class="poema-completo-texto">
+                Admiro tu perseverancia,<br>
+                esa determinación inquebrantable,<br>
+                tu negativa a rendirte<br>
+                incluso cuando todo parece imposible.<br><br>
+                
+                Me enseñas que vale la pena luchar,<br>
+                que los obstáculos son temporales,<br>
+                que con esfuerzo y dedicación<br>
+                se puede lograr cualquier cosa.<br><br>
+                
+                Tu perseverancia me inspira,<br>
+                me motiva a ser mejor,<br>
+                y me recuerda que elegí<br>
+                a una persona extraordinaria.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Nuestro lenguaje</h3>
+            <p class="poema-completo-texto">
+                Hemos creado nuestro propio lenguaje,<br>
+                esas miradas que dicen tanto,<br>
+                esos gestos que solo nosotros entendemos,<br>
+                esas palabras con significados especiales.<br><br>
+                
+                Nos comunicamos en frecuencias<br>
+                que otros no pueden captar,<br>
+                entendemos lo no dicho,<br>
+                sentimos lo que el otro siente.<br><br>
+                
+                Este lenguaje único es nuestro,<br>
+                construido día a día,<br>
+                una prueba más de la conexión profunda<br>
+                que compartimos.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Tu humildad</h3>
+            <p class="poema-completo-texto">
+                A pesar de todo lo que eres,<br>
+                de todo lo que logras,<br>
+                mantienes una humildad hermosa<br>
+                que hace que te ame aún más.<br><br>
+                
+                No presumes de tus logros,<br>
+                no te crees superior a nadie,<br>
+                y esa sencillez<br>
+                es una de tus cualidades más bellas.<br><br>
+                
+                Tu humildad te hace grande,<br>
+                te hace especial,<br>
+                y me recuerda que elegí<br>
+                a una persona con un corazón gigante.
+            </p>
+        </div>
+
+        <div class="poema-completo-card">
+            <h3 class="poema-completo-titulo">Para siempre tú y yo</h3>
+            <p class="poema-completo-texto">
+                En este viaje llamado vida,<br>
+                no hay nadie más con quien quiera estar,<br>
+                no hay otro futuro que me emocione<br>
+                si no es uno contigo.<br><br>
+                
+                Tú y yo contra el mundo,<br>
+                tú y yo construyendo sueños,<br>
+                tú y yo envejeciendo juntos,<br>
+                tú y yo hasta el final.<br><br>
+                
+                Esto es para siempre,<br>
+                no porque lo prometa,<br>
+                sino porque no concibo<br>
+                una vida sin ti en ella.
+            </p>
+        </div>
+    </div>
+
+    <!-- Sección: Playlists -->
+    <div class="seccion-playlists" id="seccionPlaylists">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionPlaylists')">←</div>
+        
+        <div class="playlist-container">
+            <h2 class="album-titulo">Nuestras Canciones 🎵💗</h2>
+            
+            <div class="playlist-card">
+                <h3 class="playlist-titulo">🎸 Playlist Completa</h3>
+                <div class="playlist-items">
+                    <div class="playlist-item" onclick="abrirYoutube('playlist1')">
+                        <div class="playlist-info">
+                            <span>🎵</span>
+                            <span class="playlist-nombre">Nuestra Playlist de Amor</span>
+                        </div>
+                        <button class="playlist-boton">Escuchar ▶</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="playlist-card">
+                <h3 class="playlist-titulo">💕 Canciones que nos recuerdan</h3>
+                <div class="playlist-items">
+                    <div class="playlist-item" onclick="abrirYoutube('cancion1')">
+                        <div class="playlist-info">
+                            <span>🎼</span>
+                            <span class="playlist-nombre">We Are Bulletproof: The Eternal - BTS</span>
+                        </div>
+                        <button class="playlist-boton">Escuchar ▶</button>
+                    </div>
+                    <div class="playlist-item" onclick="abrirYoutube('cancion2')">
+                        <div class="playlist-info">
+                            <span>🎼</span>
+                            <span class="playlist-nombre">I NEED U - BTS</span>
+                        </div>
+                        <button class="playlist-boton">Escuchar ▶</button>
+                    </div>
+                    <div class="playlist-item" onclick="abrirYoutube('cancion3')">
+                        <div class="playlist-info">
+                            <span>🎼</span>
+                            <span class="playlist-nombre">ONLY - Lee Hi</span>
+                        </div>
+                        <button class="playlist-boton">Escuchar ▶</button>
+                    </div>
+                    <div class="playlist-item" onclick="abrirYoutube('cancion4')">
+                        <div class="playlist-info">
+                            <span>🎼</span>
+                            <span class="playlist-nombre">Polaroid Love - ENHYPEN</span>
+                        </div>
+                        <button class="playlist-boton">Escuchar ▶</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Álbum de Fotos -->
+    <div class="seccion-album" id="seccionAlbum">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionAlbum')">←</div>
+        
+        <h2 class="album-titulo">Nuestros Momentos 📸💕</h2>
+        
+        <div class="carrusel-container">
+            <div class="carrusel-flecha carrusel-flecha-izq" onclick="cambiarFoto(-1)">←</div>
+            
+            <!-- Placeholder para fotos - REEMPLAZAR CON TUS FOTOS -->
+            <img src="https://via.placeholder.com/800x500/ffc9d9/6b4d57?text=Foto+1+💕" class="carrusel-foto activa" alt="Nosotros 1">
+            <img src="https://via.placeholder.com/800x500/ffe5ed/6b4d57?text=Foto+2+💗" class="carrusel-foto" alt="Nosotros 2">
+            <img src="https://via.placeholder.com/800x500/ffd4e5/6b4d57?text=Foto+3+✨" class="carrusel-foto" alt="Nosotros 3">
+            <img src="https://via.placeholder.com/800x500/e6d5ff/6b4d57?text=Foto+4+🌟" class="carrusel-foto" alt="Nosotros 4">
+            <img src="https://via.placeholder.com/800x500/ffc9d9/6b4d57?text=Foto+5+💝" class="carrusel-foto" alt="Nosotros 5">
+            
+            <div class="carrusel-flecha carrusel-flecha-der" onclick="cambiarFoto(1)">→</div>
+        </div>
+        
+        <div class="carrusel-indicadores" id="carruselIndicadores"></div>
+        
+        <p class="foto-leyenda" id="fotoLeyenda">Nuestro primer momento juntos 💕</p>
+        
+        <p style="font-family: 'Quicksand', sans-serif; color: #b88090; text-align: center; margin-top: 30px; font-size: 0.9rem;">
+            <strong>Para personalizar:</strong> Reemplaza las imágenes placeholder en el código HTML con tus propias fotos
+        </p>
+    </div>
+
+    <!-- Sección: Razones por las que te amo -->
+    <div class="seccion-razones" id="seccionRazones">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionRazones')">←</div>
+        
+        <div class="poemas-header">
+            <h2 class="poemas-titulo" style="font-size: 3rem;">100 razones por las que te amo 💗</h2>
+            <p style="font-family: 'Quicksand', sans-serif; color: #b88090; font-size: 1.1rem;">
+                (Aquí solo algunas... ¡porque la lista es infinita!)
+            </p>
+        </div>
+
+        <div class="razones-grid">
+            <div class="razon-card">
+                <div class="razon-numero">1</div>
+                <p class="razon-texto">Por tu sonrisa que ilumina mis días</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">2</div>
+                <p class="razon-texto">Por cómo me haces sentir especial cada día</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">3</div>
+                <p class="razon-texto">Por tu manera única de ver el mundo</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">4</div>
+                <p class="razon-texto">Por tu risa contagiosa</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">5</div>
+                <p class="razon-texto">Por cómo me entiendes sin palabras</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">6</div>
+                <p class="razon-texto">Por tu bondad infinita</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">7</div>
+                <p class="razon-texto">Por cada abrazo que me das</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">8</div>
+                <p class="razon-texto">Por tu paciencia conmigo</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">9</div>
+                <p class="razon-texto">Por cómo cuidas de los demás</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">10</div>
+                <p class="razon-texto">Por tu pasión en todo lo que haces</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">11</div>
+                <p class="razon-texto">Por los momentos de silencio cómodo</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">12</div>
+                <p class="razon-texto">Por tu forma de mirarme</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">13</div>
+                <p class="razon-texto">Por tu valentía ante la vida</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">14</div>
+                <p class="razon-texto">Por cómo me haces mejor persona</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">15</div>
+                <p class="razon-texto">Por tu honestidad siempre</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">16</div>
+                <p class="razon-texto">Por tu manera de amarme</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">17</div>
+                <p class="razon-texto">Por cada mensaje de buenos días</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">18</div>
+                <p class="razon-texto">Por tu apoyo incondicional</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">19</div>
+                <p class="razon-texto">Por cómo celebras mis logros</p>
+            </div>
+            <div class="razon-card">
+                <div class="razon-numero">20</div>
+                <p class="razon-texto">Por simplemente existir en mi vida</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Generador de Cartas Aleatorias -->
+    <div class="seccion-generador" id="seccionGenerador">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionGenerador')">←</div>
+        
+        <div class="generador-container">
+            <div class="generador-sobre">💌</div>
+            <h2 class="generador-titulo">Carta del día para ti</h2>
+            <div class="carta-generada" id="cartaGenerada">
+                Haz clic en el botón para recibir un mensaje especial... 💕
+            </div>
+            <button class="boton-generar" onclick="generarCarta()">✨ Generar carta de amor ✨</button>
+        </div>
+    </div>
+
+    <!-- Sección: Cartas Sorpresa -->
+    <div class="seccion-cartas-sorpresa" id="seccionCartasSorpresa">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionCartasSorpresa')">←</div>
+        
+        <div class="poemas-header">
+            <h2 class="poemas-titulo" style="font-size: 3rem;">Cartas Sorpresa 🎁💌</h2>
+            <p style="font-family: 'Quicksand', sans-serif; color: #b88090; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                Mensajes especiales guardados para fechas importantes. ¡Haz clic en cada carta para revelar su contenido!
+            </p>
+        </div>
+
+        <div class="cartas-grid">
+            <!-- Carta 1: Aniversario -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">💍</div>
+                <h3 class="carta-fecha">Nuestro Aniversario</h3>
+                <p class="carta-descripcion">Un mensaje especial para celebrar nuestro amor</p>
+                <div class="carta-contenido">
+                    Hoy celebramos un año más juntos, y cada día a tu lado ha sido un regalo. No importa cuántos años pasen, siempre te elegiré. Gracias por construir este amor conmigo, día a día, momento a momento. Te amo hoy y siempre. 💕
+                </div>
+            </div>
+
+            <!-- Carta 2: Cumpleaños -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">🎂</div>
+                <h3 class="carta-fecha">Tu Cumpleaños</h3>
+                <p class="carta-descripcion">Celebrando el día que llegaste al mundo</p>
+                <div class="carta-contenido">
+                    Feliz cumpleaños, amor de mi vida. Hoy celebro no solo que naciste, sino que el universo conspirara para que nuestros caminos se cruzaran. Eres el mejor regalo que la vida me ha dado. Que este nuevo año esté lleno de amor, risas y sueños cumplidos. 🎉💗
+                </div>
+            </div>
+
+            <!-- Carta 3: Cuando estés triste -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">🌧️</div>
+                <h3 class="carta-fecha">Cuando estés triste</h3>
+                <p class="carta-descripcion">Para levantarte el ánimo</p>
+                <div class="carta-contenido">
+                    Sé que hoy no es tu mejor día, pero quiero que sepas que estoy aquí para ti. Las tormentas pasan, y después de la lluvia siempre sale el sol. Eres más fuerte de lo que crees, y juntos podemos con todo. Te amo en tus días buenos y en los difíciles. 🌈💕
+                </div>
+            </div>
+
+            <!-- Carta 4: Sin razón especial -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">💝</div>
+                <h3 class="carta-fecha">Sin razón especial</h3>
+                <p class="carta-descripcion">Solo porque te amo</p>
+                <div class="carta-contenido">
+                    No necesito una fecha especial para decirte cuánto significas para mí. Cada día contigo es extraordinario. Gracias por ser tú, por amarme como lo haces, por hacer de mi vida algo hermoso. Te amo simplemente porque eres tú. ✨💗
+                </div>
+            </div>
+
+            <!-- Carta 5: Cuando me extrañes -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">🌙</div>
+                <h3 class="carta-fecha">Cuando me extrañes</h3>
+                <p class="carta-descripcion">Para acortar la distancia</p>
+                <div class="carta-contenido">
+                    Sé que la distancia es difícil, pero recuerda que mi corazón siempre está contigo. Cada estrella en el cielo lleva un pensamiento mío hacia ti. Pronto estaremos juntos de nuevo, y ese momento valdrá cada segundo de espera. Te amo y te extraño. 🌟💕
+                </div>
+            </div>
+
+            <!-- Carta 6: Buenos días -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">☀️</div>
+                <h3 class="carta-fecha">Buenos días, amor</h3>
+                <p class="carta-descripcion">Para empezar el día con amor</p>
+                <div class="carta-contenido">
+                    Buenos días, mi amor. Espero que hoy sea un día maravilloso para ti. Que cada momento te traiga alegría, y recuerda que pienso en ti desde que amanece hasta que anochece. Haz de este día algo increíble. ¡Te amo! 💛☀️
+                </div>
+            </div>
+
+            <!-- Carta 7: Buenas noches -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">🌠</div>
+                <h3 class="carta-fecha">Buenas noches, amor</h3>
+                <p class="carta-descripcion">Para terminar el día juntos</p>
+                <div class="carta-contenido">
+                    Buenas noches, mi cielo. Que tengas los sueños más dulces, y espero ser parte de ellos. Descansa bien, mañana será un nuevo día lleno de posibilidades. Te amo hasta la luna y de regreso. 🌙✨
+                </div>
+            </div>
+
+            <!-- Carta 8: Estoy orgulloso de ti -->
+            <div class="carta-sorpresa-card" onclick="abrirCartaSorpresa(this)">
+                <div class="etiqueta-especial">¡Disponible!</div>
+                <div class="carta-icono">🏆</div>
+                <h3 class="carta-fecha">Estoy orgulloso de ti</h3>
+                <p class="carta-descripcion">Celebrando tus logros</p>
+                <div class="carta-contenido">
+                    Estoy increíblemente orgulloso de ti y de todo lo que has logrado. Tu dedicación, tu esfuerzo y tu pasión son inspiradores. Siempre estaré aquí para apoyarte en cada paso del camino. ¡Eres increíble! 💪💗
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Dibujo Digital -->
+    <div class="seccion-dibujo" id="seccionDibujo">
+        <!-- Top toolbar -->
+        <div class="dibujo-top-toolbar">
+            <button class="top-tool-btn" onclick="cerrarSeccion('seccionDibujo')" title="Volver">☰</button>
+            <button class="top-tool-btn" onclick="deshacer()" title="Deshacer">↶</button>
+            <button class="top-tool-btn" onclick="rehacer()" title="Rehacer">↷</button>
+            <button class="top-tool-btn" onclick="toggleSeleccion()" title="Seleccionar">⬚</button>
+            <button class="top-tool-btn" onclick="moverCanvas()" title="Mover">✥</button>
+            <button class="top-tool-btn" onclick="guardarDibujo()" title="Guardar">💾</button>
+            <button class="top-tool-btn" onclick="limpiarCanvas()" title="Limpiar">🗑️</button>
+        </div>
+
+        <div class="dibujo-workspace">
+            <!-- Left toolbar - Brushes -->
+            <div class="left-toolbar">
+                <div class="brush-btn activo" onclick="cambiarBrush('pincel', 1)" title="Pincel básico">
+                    <div style="width: 30px; height: 30px; background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><circle cx=%2212%22 cy=%2212%22 r=%223%22 fill=%22%23333%22/></svg>') center/contain no-repeat;"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('pincel', 2)" title="Pincel suave">
+                    <div style="width: 30px; height: 30px; background: radial-gradient(circle, #333 0%, transparent 70%);"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('marcador', 3)" title="Marcador">
+                    <div style="width: 25px; height: 25px; background: #333; border-radius: 3px;"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('lapiz', 4)" title="Lápiz">
+                    <div style="width: 20px; height: 20px; border: 2px solid #333; background: white;"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('aerografo', 5)" title="Aerógrafo">
+                    <div style="width: 30px; height: 30px; background: radial-gradient(circle, rgba(51,51,51,0.3) 0%, transparent 60%);"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('borrador', 6)" title="Borrador">
+                    <div style="width: 25px; height: 25px; background: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%), linear-gradient(45deg, #ccc 25%, white 25%, white 75%, #ccc 75%); background-size: 10px 10px; background-position: 0 0, 5px 5px;"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('pluma', 7)" title="Pluma">
+                    <div style="width: 22px; height: 22px; background: #333; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('acuarela', 8)" title="Acuarela">
+                    <div style="width: 28px; height: 28px; background: radial-gradient(ellipse, rgba(51,51,51,0.4) 0%, transparent 70%); opacity: 0.6;"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('tiza', 9)" title="Tiza">
+                    <div style="width: 24px; height: 24px; background: repeating-linear-gradient(45deg, #333, #333 2px, transparent 2px, transparent 4px); opacity: 0.7;"></div>
+                </div>
+                <div class="brush-btn" onclick="cambiarBrush('carbon', 10)" title="Carbón">
+                    <div style="width: 26px; height: 26px; background: radial-gradient(circle, #1a1a1a 20%, #333 40%, transparent 70%);"></div>
+                </div>
+                <button class="brush-btn" style="background: transparent; border: none; font-size: 28px;" title="Favoritos">⭐</button>
+            </div>
+
+            <!-- Canvas area -->
+            <div class="canvas-workspace">
+                <canvas id="canvasDibujo" width="1000" height="700"></canvas>
+            </div>
+
+            <!-- Right toolbar - Color -->
+            <div class="right-toolbar">
+                <div class="color-circle" style="background: #000;" onclick="seleccionarColor('#000')"></div>
+                <div class="add-color-btn" onclick="toggleColorPicker()">+</div>
+            </div>
+        </div>
+
+        <!-- Bottom right panel -->
+        <div class="bottom-right-panel">
+            <div class="panel-item" onclick="toggleBrushSize()">
+                <span class="panel-item-icon">👁️</span>
+            </div>
+            <div class="panel-item" onclick="toggleLayerPanel()">
+                <span class="panel-item-icon">☰</span>
+            </div>
+            <div class="panel-item" onclick="toggleColorPicker()">
+                <span class="panel-item-icon">👁️</span>
+                <span class="panel-item-text">Fondo</span>
+            </div>
+            <div class="color-wheel" onclick="toggleColorPicker()"></div>
+        </div>
+
+        <!-- Color picker modal -->
+        <div class="color-picker-modal" id="colorPickerModal">
+            <h3 style="font-family: 'Quicksand', sans-serif; margin-bottom: 15px; color: #6b4d57;">Selecciona un color</h3>
+            <div class="color-palette-grid">
+                <div class="palette-color" style="background: #000;" onclick="aplicarColor('#000')"></div>
+                <div class="palette-color" style="background: #ff8fb3;" onclick="aplicarColor('#ff8fb3')"></div>
+                <div class="palette-color" style="background: #ffc9d9;" onclick="aplicarColor('#ffc9d9')"></div>
+                <div class="palette-color" style="background: #ff6b9d;" onclick="aplicarColor('#ff6b9d')"></div>
+                <div class="palette-color" style="background: #c9b3ff;" onclick="aplicarColor('#c9b3ff')"></div>
+                <div class="palette-color" style="background: #fff;" onclick="aplicarColor('#fff')"></div>
+                
+                <div class="palette-color" style="background: #ff5252;" onclick="aplicarColor('#ff5252')"></div>
+                <div class="palette-color" style="background: #ff7043;" onclick="aplicarColor('#ff7043')"></div>
+                <div class="palette-color" style="background: #ffd54f;" onclick="aplicarColor('#ffd54f')"></div>
+                <div class="palette-color" style="background: #9ccc65;" onclick="aplicarColor('#9ccc65')"></div>
+                <div class="palette-color" style="background: #4db6ac;" onclick="aplicarColor('#4db6ac')"></div>
+                <div class="palette-color" style="background: #eeeeee;" onclick="aplicarColor('#eeeeee')"></div>
+                
+                <div class="palette-color" style="background: #42a5f5;" onclick="aplicarColor('#42a5f5')"></div>
+                <div class="palette-color" style="background: #5c6bc0;" onclick="aplicarColor('#5c6bc0')"></div>
+                <div class="palette-color" style="background: #ab47bc;" onclick="aplicarColor('#ab47bc')"></div>
+                <div class="palette-color" style="background: #8d6e63;" onclick="aplicarColor('#8d6e63')"></div>
+                <div class="palette-color" style="background: #78909c;" onclick="aplicarColor('#78909c')"></div>
+                <div class="palette-color" style="background: #666;" onclick="aplicarColor('#666')"></div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label style="font-family: 'Quicksand', sans-serif; font-size: 0.9rem; color: #6b4d57;">Color personalizado:</label>
+                <input type="color" id="customColorPicker" style="width: 100%; height: 40px; border: none; border-radius: 8px; cursor: pointer; margin-top: 5px;" onchange="aplicarColor(this.value)">
+            </div>
+        </div>
+
+        <!-- Brush size slider -->
+        <div class="brush-size-container" id="brushSizeContainer">
+            <h4 style="font-family: 'Quicksand', sans-serif; margin-bottom: 10px; color: #6b4d57;">Tamaño del pincel</h4>
+            <input type="range" min="1" max="100" value="5" class="size-slider" id="brushSizeSlider" oninput="actualizarTamañoBrush(this.value)">
+            <div class="size-preview">
+                <div class="size-dot" id="sizeDotPreview" style="width: 5px; height: 5px;"></div>
+            </div>
+            <p style="text-align: center; font-family: 'Quicksand', sans-serif; color: #6b4d57; margin-top: 10px;">
+                <span id="brushSizeValue">5</span>px
+            </p>
+        </div>
+    </div>
+
+    <!-- Sección: Chistes -->
+    <div class="seccion-chistes" id="seccionChistes">
+        <div class="poemas-volver" onclick="cerrarSeccion('seccionChistes')">←</div>
+        
+        <div class="poemas-header">
+            <h2 class="poemas-titulo" style="font-size: 3rem;">Para hacerte reír 😂💕</h2>
+            <p class="chiste-instruccion">(Haz clic en cada chiste para ver la respuesta)</p>
+        </div>
+
+        <div class="chistes-container">
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#1</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍕</span>¿Por qué la pizza fue al psicólogo?</p>
+                <p class="chiste-respuesta">Porque tenía problemas con su "masa" emocional.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#2</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">📚</span>¿Qué le dice un libro a otro libro?</p>
+                <p class="chiste-respuesta">¡Nos vemos en la biblio-teca!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#3</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🦸</span>¿Por qué Superman no puede tomar té?</p>
+                <p class="chiste-respuesta">Porque para él, té = kryptonita (T = Kriptonita)</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#4</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🧀</span>¿Cómo se llama el campeón de buceo en el Sahara?</p>
+                <p class="chiste-respuesta">Nada-ie, porque no hay agua.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#5</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">💻</span>¿Por qué los programadores prefieren el modo oscuro?</p>
+                <p class="chiste-respuesta">Porque la luz atrae a los bugs.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#6</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐝</span>¿Qué le dice una abeja a otra abeja?</p>
+                <p class="chiste-respuesta">¡Hola, bee-lla!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#7</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🌮</span>¿Cómo se despiden los tacos?</p>
+                <p class="chiste-respuesta">¡Nos vemos al tac-o!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#8</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐟</span>¿Qué hace un pez en el gimnasio?</p>
+                <p class="chiste-respuesta">¡Nada-tación!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#9</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎸</span>¿Por qué la guitarra fue al médico?</p>
+                <p class="chiste-respuesta">Porque tenía las cuerdas vocales inflamadas.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#10</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🧛</span>¿Cuál es el colmo de un vampiro?</p>
+                <p class="chiste-respuesta">Tener la tensión baja.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#11</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">☕</span>¿Por qué el café fue a la policía?</p>
+                <p class="chiste-respuesta">Porque lo molieron.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#12</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🌙</span>¿Qué le dice la Luna al Sol?</p>
+                <p class="chiste-respuesta">Tan grande y no te dejan salir de noche.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#13</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🦆</span>¿Qué le dice un pato a otro pato?</p>
+                <p class="chiste-respuesta">¡Estamos em-pato-dos!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#14</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍋</span>¿Qué le dice un limón a otro en el gimnasio?</p>
+                <p class="chiste-respuesta">¡Vamos a expri-MIRR-nos!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#15</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">📱</span>¿Por qué el celular fue a la escuela?</p>
+                <p class="chiste-respuesta">Para mejorar su cobertura.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#16</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎭</span>¿Cuál es el colmo de un actor?</p>
+                <p class="chiste-respuesta">Tener escenas con su pareja pero no hablarle.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#17</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🧊</span>¿Por qué el hielo siempre está tranquilo?</p>
+                <p class="chiste-respuesta">Porque siempre mantiene la calma... ¡está congelado!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#18</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍪</span>¿Qué hace una galleta en el gimnasio?</p>
+                <p class="chiste-respuesta">Intenta no des-moronarse.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#19</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎨</span>¿Por qué los pintores son tan buenos para guardar secretos?</p>
+                <p class="chiste-respuesta">Porque siempre están en su cuadro.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#20</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐧</span>¿Cómo se llama el pingüino más famoso?</p>
+                <p class="chiste-respuesta">Pin-güin-terest.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#21</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍩</span>¿Por qué la dona fue al dentista?</p>
+                <p class="chiste-respuesta">Porque tenía un agujero.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#22</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎹</span>¿Qué hace un piano en la playa?</p>
+                <p class="chiste-respuesta">¡Piano-near!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#23</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐘</span>¿Cómo metes un elefante en el refrigerador?</p>
+                <p class="chiste-respuesta">Abres la puerta, lo metes y cierras la puerta.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#24</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎪</span>¿Por qué el circo cerró?</p>
+                <p class="chiste-respuesta">Porque no tenían carpa suficiente.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#25</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🥑</span>¿Qué hace un aguacate en un teléfono?</p>
+                <p class="chiste-respuesta">¡Guaca-mojar!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#26</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🦖</span>¿Por qué los dinosaurios no pueden aplaudir?</p>
+                <p class="chiste-respuesta">Porque están extintos.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#27</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎮</span>¿Cuál es el videojuego favorito de los veganos?</p>
+                <p class="chiste-respuesta">Plants vs. Zombies.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#28</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🌵</span>¿Qué hace un cactus en una fiesta?</p>
+                <p class="chiste-respuesta">Pincha discos.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#29</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🦒</span>¿Por qué las jirafas tienen el cuello largo?</p>
+                <p class="chiste-respuesta">Porque tienen los pies muy lejos de la cabeza.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#30</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎓</span>¿Qué hace un matemático en el jardín?</p>
+                <p class="chiste-respuesta">Calcular raíces cuadradas.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#31</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍌</span>¿Por qué el plátano fue al médico?</p>
+                <p class="chiste-respuesta">Porque no se sentía muy bien... ¡estaba aplastado!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#32</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🚗</span>¿Cuál es el coche más tranquilo?</p>
+                <p class="chiste-respuesta">El Calmaro.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#33</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎤</span>¿Qué hace un cantante en el banco?</p>
+                <p class="chiste-respuesta">Saca notas.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#34</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐻</span>¿Cómo se llama un oso sin dientes?</p>
+                <p class="chiste-respuesta">Un oso de goma.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#35</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🏃</span>¿Por qué corrió el tomate?</p>
+                <p class="chiste-respuesta">Porque vio a la ensalada.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#36</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🌊</span>¿Cómo se despiden los marinos?</p>
+                <p class="chiste-respuesta">¡A-diós-mar!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#37</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍔</span>¿Qué hace una hamburguesa en el gimnasio?</p>
+                <p class="chiste-respuesta">Jalapeño business.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#38</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎯</span>¿Cuál es el deporte favorito de las arañas?</p>
+                <p class="chiste-respuesta">El web-surf.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#39</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🦁</span>¿Qué hace un león vegetariano?</p>
+                <p class="chiste-respuesta">Come "lechu-ga".</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#40</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎂</span>¿Por qué el pastel fue a la escuela?</p>
+                <p class="chiste-respuesta">Para mejorar su glaseado (clase-ado).</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#41</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🌟</span>¿Qué hace una estrella en la tierra?</p>
+                <p class="chiste-respuesta">Estrell-arse.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#42</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐔</span>¿Por qué el pollo cruzó la carretera?</p>
+                <p class="chiste-respuesta">Para demostrar que no era gallina.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#43</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">⚡</span>¿Cuál es el colmo de un electricista?</p>
+                <p class="chiste-respuesta">Que su esposa se llame Luz y sus hijos no le saluden.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#44</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🧲</span>¿Por qué el imán está triste?</p>
+                <p class="chiste-respuesta">Porque todos lo rechazan.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#45</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎬</span>¿Qué hace una película en el refrigerador?</p>
+                <p class="chiste-respuesta">Se congela de emoción.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#46</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐍</span>¿Qué le dice una serpiente a otra?</p>
+                <p class="chiste-respuesta">¡Qué víbora tan bonita!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#47</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎪</span>¿Cuál es el animal más antiguo?</p>
+                <p class="chiste-respuesta">La cebra, porque está en blanco y negro.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#48</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🍦</span>¿Por qué el helado fue al psicólogo?</p>
+                <p class="chiste-respuesta">Porque tenía un vacío emocional en el centro.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#49</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🚀</span>¿Cómo organizan una fiesta en el espacio?</p>
+                <p class="chiste-respuesta">¡La planetean!</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#50</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">💡</span>¿Cuántos programadores se necesitan para cambiar un foco?</p>
+                <p class="chiste-respuesta">Ninguno, es un problema de hardware.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#51</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🎵</span>¿Por qué la música es tan buena amiga?</p>
+                <p class="chiste-respuesta">Porque siempre tiene buen ritmo en la vida.</p>
+            </div>
+
+            <div class="chiste-card" onclick="revelarChiste(this)">
+                <span class="chiste-numero">#52</span>
+                <p class="chiste-pregunta"><span class="chiste-emoji">🐙</span>¿Cuántos pulpos se necesitan para hacer un abrazo?</p>
+                <p class="chiste-respuesta">Ninguno, con uno tienes 8 brazos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mensajes emergentes -->
+    <div class="modal" id="modal">
+        <div class="modal-contenido">
+            <span class="modal-cerrar" onclick="cerrarModal()">×</span>
+            <p class="modal-texto" id="modalTexto"></p>
+        </div>
+    </div>
+
+    <script>
+        // ===== GENERAR CORAZONES FLOTANTES =====
+        function generarCorazones() {
+            const contenedor = document.getElementById('corazonesFondo');
+            const corazones = ['💗', '💖', '💕', '💝', '💘'];
+            
+            for (let i = 0; i < 15; i++) {
+                const corazon = document.createElement('div');
+                corazon.className = 'corazon-flotante';
+                corazon.textContent = corazones[Math.floor(Math.random() * corazones.length)];
+                corazon.style.left = Math.random() * 100 + '%';
+                corazon.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                corazon.style.animationDelay = Math.random() * 5 + 's';
+                contenedor.appendChild(corazon);
+            }
+        }
+
+        // ===== FUNCIÓN ENTRAR =====
+        function entrar() {
+            const pantalla = document.getElementById('pantallaBienvenida');
+            const contenido = document.getElementById('contenidoPrincipal');
+            const menuBoton = document.getElementById('menuBoton');
+            
+            pantalla.classList.add('ocultar');
+            
+            setTimeout(() => {
+                pantalla.style.display = 'none';
+                contenido.classList.add('mostrar');
+                menuBoton.style.display = 'flex';
+                generarCorazones();
+            }, 1000);
+        }
+
+        // ===== MENÚ LATERAL =====
+        function toggleMenu() {
+            const menu = document.getElementById('menuLateral');
+            menu.classList.toggle('abierto');
+        }
+
+        // ===== ABRIR SECCIONES =====
+        function abrirPoemas() {
+            toggleMenu();
+            document.getElementById('seccionPoemas').classList.add('activa');
+        }
+
+        function abrirPlaylists() {
+            toggleMenu();
+            document.getElementById('seccionPlaylists').classList.add('activa');
+        }
+
+        function abrirAlbum() {
+            toggleMenu();
+            document.getElementById('seccionAlbum').classList.add('activa');
+            inicializarCarrusel();
+        }
+
+        function abrirRazones() {
+            toggleMenu();
+            document.getElementById('seccionRazones').classList.add('activa');
+        }
+
+        function abrirGenerador() {
+            toggleMenu();
+            document.getElementById('seccionGenerador').classList.add('activa');
+        }
+
+        function abrirCartasSorpresa() {
+            toggleMenu();
+            document.getElementById('seccionCartasSorpresa').classList.add('activa');
+        }
+
+        function abrirChistes() {
+            toggleMenu();
+            document.getElementById('seccionChistes').classList.add('activa');
+        }
+
+        function abrirDibujo() {
+            toggleMenu();
+            document.getElementById('seccionDibujo').classList.add('activa');
+            inicializarCanvas();
+        }
+
+        function cerrarSeccion(idSeccion) {
+            document.getElementById(idSeccion).classList.remove('activa');
+        }
+
+        // ===== REVELAR CHISTES =====
+        function revelarChiste(elemento) {
+            elemento.classList.toggle('revelado');
+        }
+
+        // ===== SISTEMA DE DIBUJO DIGITAL =====
+        let canvas, ctx;
+        let dibujando = false;
+        let brushActual = 'pincel';
+        let brushTipo = 1;
+        let colorActual = '#000000';
+        let tamañoActual = 5;
+        let opacidadActual = 1;
+        let fondoActual = '#ff99cc';
+        let historial = [];
+        let historialIndex = -1;
+        let puntoInicio = { x: 0, y: 0 };
+
+        function inicializarCanvas() {
+            if (!canvas) {
+                canvas = document.getElementById('canvasDibujo');
+                ctx = canvas.getContext('2d');
+                
+                // Configurar fondo inicial
+                ctx.fillStyle = fondoActual;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Guardar estado inicial
+                guardarEstado();
+                
+                // Event listeners
+                canvas.addEventListener('mousedown', iniciarDibujo);
+                canvas.addEventListener('mousemove', dibujar);
+                canvas.addEventListener('mouseup', detenerDibujo);
+                canvas.addEventListener('mouseout', detenerDibujo);
+                
+                // Touch events
+                canvas.addEventListener('touchstart', handleTouchStart, false);
+                canvas.addEventListener('touchmove', handleTouchMove, false);
+                canvas.addEventListener('touchend', handleTouchEnd, false);
+            }
+        }
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            canvas.dispatchEvent(new MouseEvent('mouseup', {}));
+        }
+
+        function obtenerPosicion(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function iniciarDibujo(e) {
+            dibujando = true;
+            const pos = obtenerPosicion(e);
+            puntoInicio = pos;
+            
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function dibujar(e) {
+            if (!dibujando) return;
+            
+            const pos = obtenerPosicion(e);
+            
+            ctx.globalAlpha = opacidadActual;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            if (brushActual === 'borrador') {
+                ctx.strokeStyle = fondoActual;
+                ctx.lineWidth = tamañoActual * 2;
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            } else if (brushActual === 'aerografo') {
+                ctx.fillStyle = colorActual;
+                for (let i = 0; i < 8; i++) {
+                    const offsetX = (Math.random() - 0.5) * tamañoActual * 3;
+                    const offsetY = (Math.random() - 0.5) * tamañoActual * 3;
+                    ctx.globalAlpha = Math.random() * opacidadActual * 0.3;
+                    ctx.fillRect(pos.x + offsetX, pos.y + offsetY, 1, 1);
+                }
+                ctx.globalAlpha = opacidadActual;
+            } else if (brushActual === 'acuarela') {
+                ctx.strokeStyle = colorActual;
+                ctx.lineWidth = tamañoActual * 1.5;
+                ctx.globalAlpha = opacidadActual * 0.3;
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            } else if (brushActual === 'tiza') {
+                ctx.strokeStyle = colorActual;
+                ctx.lineWidth = tamañoActual;
+                ctx.globalAlpha = opacidadActual * 0.7;
+                ctx.setLineDash([2, 2]);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            } else {
+                // Pincel normal, marcador, lápiz, pluma, carbón
+                ctx.strokeStyle = colorActual;
+                ctx.lineWidth = tamañoActual;
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+        }
+
+        function detenerDibujo() {
+            if (!dibujando) return;
+            dibujando = false;
+            ctx.beginPath();
+            guardarEstado();
+        }
+
+        function cambiarBrush(tipo, numero) {
+            brushActual = tipo;
+            brushTipo = numero;
+            
+            // Actualizar UI
+            document.querySelectorAll('.brush-btn').forEach(btn => {
+                btn.classList.remove('activo');
+            });
+            event.currentTarget.classList.add('activo');
+        }
+
+        function seleccionarColor(color) {
+            colorActual = color;
+            document.querySelector('.color-circle').style.background = color;
+        }
+
+        function toggleColorPicker() {
+            const modal = document.getElementById('colorPickerModal');
+            modal.classList.toggle('activo');
+        }
+
+        function aplicarColor(color) {
+            colorActual = color;
+            document.querySelector('.color-circle').style.background = color;
+            
+            // Actualizar UI
+            document.querySelectorAll('.palette-color').forEach(c => {
+                c.classList.remove('selected');
+            });
+            event.currentTarget?.classList.add('selected');
+        }
+
+        function toggleBrushSize() {
+            const container = document.getElementById('brushSizeContainer');
+            container.classList.toggle('activo');
+        }
+
+        function actualizarTamañoBrush(valor) {
+            tamañoActual = parseInt(valor);
+            document.getElementById('brushSizeValue').textContent = valor;
+            document.getElementById('sizeDotPreview').style.width = valor + 'px';
+            document.getElementById('sizeDotPreview').style.height = valor + 'px';
+        }
+
+        function toggleLayerPanel() {
+            alert('Panel de capas (función avanzada) - Próximamente 💕');
+        }
+
+        function toggleSeleccion() {
+            alert('Herramienta de selección - Próximamente 🎨');
+        }
+
+        function moverCanvas() {
+            alert('Herramienta de mover - Próximamente ✨');
+        }
+
+        function limpiarCanvas() {
+            if (confirm('¿Estás seguro de que quieres limpiar todo el dibujo?')) {
+                ctx.fillStyle = fondoActual;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                historial = [];
+                historialIndex = -1;
+                guardarEstado();
+            }
+        }
+
+        function guardarEstado() {
+            // Eliminar estados futuros si estamos en medio del historial
+            if (historialIndex < historial.length - 1) {
+                historial = historial.slice(0, historialIndex + 1);
+            }
+            
+            historial.push(canvas.toDataURL());
+            historialIndex++;
+            
+            // Limitar historial a 30 estados
+            if (historial.length > 30) {
+                historial.shift();
+                historialIndex--;
+            }
+        }
+
+        function deshacer() {
+            if (historialIndex > 0) {
+                historialIndex--;
+                const img = new Image();
+                img.src = historial[historialIndex];
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+            }
+        }
+
+        function rehacer() {
+            if (historialIndex < historial.length - 1) {
+                historialIndex++;
+                const img = new Image();
+                img.src = historial[historialIndex];
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+            }
+        }
+
+        function guardarDibujo() {
+            const link = document.createElement('a');
+            link.download = 'mi-obra-de-arte-' + Date.now() + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            setTimeout(() => {
+                alert('¡Tu dibujo se ha guardado con amor! 💕🎨');
+            }, 100);
+        }
+
+        function volverInicio() {
+            toggleMenu();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== GENERADOR DE CARTAS ALEATORIAS =====
+        const cartasAleatorias = [
+            "Mi amor, hoy desperté pensando en ti y en lo afortunado que soy de tenerte en mi vida. Cada día contigo es un regalo que atesoro. Tu risa ilumina mis días más grises y tu amor me da fuerzas para enfrentar cualquier desafío. Gracias por existir. Te amo infinitamente. 💕",
+            "En este momento, donde sea que estés, quiero que sepas que estás en mi mente y en mi corazón. Eres mi persona favorita, mi mejor decisión, y cada día me enamoro más de ti. Tu amor me hace mejor persona. Te amo con todo mi ser. 💗",
+            "Amor mío, si pudiera regalarte algo hoy, sería la capacidad de verte a través de mis ojos, para que entiendas cuán especial eres. Eres mi luz, mi paz, mi hogar. Gracias por amarme como lo haces. Te amo más que a nada en este mundo. ✨",
+            "Hoy quiero recordarte que eres increíble. Tu fuerza, tu bondad, tu manera de ver la vida... todo en ti me inspira. Estoy tan orgulloso de la persona que eres. Gracias por permitirme ser parte de tu vida. Te amo profundamente. 💝",
+            "Mi cielo, cada momento a tu lado es un recuerdo que guardo con cariño. No necesito grandes gestos ni palabras elaboradas, me basta con tu presencia, con tu mano entre las mías, con tu sonrisa. Eres mi todo. Te amo eternamente. 🌟",
+            "Amor, hoy te escribo para decirte que sin importar qué pase, estaré a tu lado. En los días buenos y en los difíciles, en las risas y en las lágrimas. Porque amar es eso: elegirte una y otra vez. Y yo te elijo siempre. Te amo con todo mi corazón. 💕",
+            "Mi vida cambió el día que llegaste a ella. Me enseñaste que el amor verdadero existe, que la felicidad se construye día a día, que los pequeños momentos son los más importantes. Gracias por ser tú, por amarme, por existir. Te amo infinitamente. 💗",
+            "Hoy solo quiero que sepas una cosa: eres mi persona. La que quiero al despertar y al dormir. La que hace que todo tenga sentido. La que convierte lo ordinario en extraordinario. Gracias por ser mi compañero en este viaje llamado vida. Te amo. ✨",
+            "Mi amor, en este mundo lleno de caos, tú eres mi calma. En medio de la incertidumbre, tú eres mi certeza. Contigo encontré mi lugar, mi hogar, mi paz. No importa lo que venga, sé que juntos podemos con todo. Te amo más cada día. 💝",
+            "Amor de mi vida, solo quería recordarte que eres suficiente. Más que suficiente. Eres extraordinario tal como eres. No necesitas cambiar nada, porque para mí, eres perfecto en tu imperfección. Te amo exactamente como eres. 🌟",
+            "Hoy pensé en todas las razones por las que te amo, y me di cuenta de que la lista es infinita. Desde tu manera de reír hasta cómo me haces sentir seguro. Cada detalle de ti me enamora. Gracias por ser mi todo. Te amo sin medida. 💕",
+            "Mi cielo, quiero que sepas que creo en ti, en tus sueños, en tu potencial. Eres capaz de lograr todo lo que te propongas, y estaré aquí para apoyarte en cada paso. Juntos somos imparables. Te amo con toda mi alma. 💗",
+            "Cada vez que sonríes, mi mundo se ilumina. Tu felicidad es mi felicidad, tus sueños son mis sueños. No hay nada que desee más que verte brillar. Gracias por compartir tu vida conmigo. Te amo inmensamente. 💫",
+            "Amor, eres la respuesta a preguntas que nunca supe que tenía. Contigo todo tiene sentido, todo encuentra su lugar. Eres mi complemento perfecto, mi alma gemela. Te amo hoy y siempre. 💖",
+            "Hoy quiero agradecerte por tu paciencia, por tu comprensión, por amarme incluso en mis peores días. Tu amor incondicional es el mayor regalo que he recibido. Te amo profundamente. 🌹",
+            "Mi vida, cada conversación contigo es mi favorita. Tu voz es mi melodía preferida, tus palabras son mi poesía. Gracias por existir y por ser mío. Te amo con todo mi ser. 🎵",
+            "En los días oscuros, tú eres mi luz. En los momentos de duda, tú eres mi certeza. En el caos, tú eres mi paz. Gracias por ser mi ancla. Te amo eternamente. ⚓💕",
+            "Amor mío, contigo aprendí que el amor verdadero no duele, sana. No limita, libera. No exige, da. Gracias por enseñarme a amar de verdad. Te amo infinitamente. 🌈",
+            "Hoy solo quiero decirte gracias. Gracias por elegirme, por amarme, por estar aquí. Eres el mejor regalo que la vida me ha dado. Te amo más de lo que las palabras pueden expresar. 🎁",
+            "Mi cielo, tu amor me ha transformado. Me has hecho mejor persona, más paciente, más comprensivo, más feliz. Gracias por ser parte de mi vida. Te amo con toda mi alma. ✨",
+            "Cada día a tu lado es una nueva aventura, un nuevo motivo para sonreír. Gracias por llenar mi vida de alegría y amor. Eres mi todo. Te amo infinitamente. 🗺️💕",
+            "Amor, en un mundo de temporalidad, tú eres mi constante. En medio del cambio, tú eres mi estabilidad. Gracias por ser mi roca. Te amo profundamente. 🪨💗",
+            "Mi vida, tu amor es mi fortaleza. Cuando me siento débil, tu abrazo me da fuerzas. Cuando dudo, tu fe en mí me impulsa. Gracias por creer en mí. Te amo. 💪💖",
+            "Hoy quiero recordarte que eres mi prioridad. Tu felicidad, tu bienestar, tu paz mental. Todo lo que eres es importante para mí. Te amo con todo mi corazón. 🌟",
+            "Amor mío, contigo descubrí que el paraíso no es un lugar, es una persona. Y esa persona eres tú. Gracias por ser mi cielo en la tierra. Te amo. ☁️💕",
+            "Cada momento contigo es un regalo. Cada sonrisa tuya es un tesoro. Cada abrazo es un refugio. Gracias por ser mi hogar. Te amo eternamente. 🏠💗",
+            "Mi cielo, eres la razón por la que creo en el amor. La prueba de que las almas gemelas existen. Mi mejor amigo y mi gran amor. Te amo infinitamente. 👫💖",
+            "Amor, tu presencia en mi vida es mi mayor bendición. No importa qué tan difícil sea el día, saber que te tengo lo hace todo mejor. Te amo profundamente. 🙏💕",
+            "Hoy quiero que sepas que no cambiaría nada de nuestra historia. Cada momento, cada experiencia nos trajo aquí, a este amor tan hermoso. Te amo. 📖💗",
+            "Mi vida, contigo aprendí que el amor no es encontrar a alguien con quien vivir, sino a alguien sin quien no puedes vivir. Esa persona eres tú. Te amo. 💫",
+            "Amor mío, eres mi inspiración diaria. Todo lo bueno que hago es porque quiero ser mejor para ti. Gracias por motivarme. Te amo con toda mi alma. 🎨💖",
+            "Cada vez que te miro, me enamoro de nuevo. Cada conversación me recuerda por qué te elegí. Cada día contigo es un regalo. Te amo infinitamente. 👀💕",
+            "Mi cielo, tu amor es mi refugio en las tormentas de la vida. Contigo me siento protegido, amado, completo. Gracias por ser mi paz. Te amo. 🌧️💗",
+            "Amor, no necesito grandes lujos ni cosas materiales. Solo necesito tu mano en la mía y tu amor en mi corazón. Eres suficiente. Te amo profundamente. ✋💖",
+            "Hoy quiero agradecerte por todos los pequeños detalles: tus mensajes de buenos días, tus abrazos sin razón, tu manera de mirarme. Te amo por todo eso. 💌",
+            "Mi vida, contigo el tiempo vuela y a la vez se detiene. Cada segundo es perfecto cuando estoy contigo. Gracias por hacer mi vida tan especial. Te amo. ⏰💕",
+            "Amor mío, eres mi lugar favorito. No importa dónde estemos, si estoy contigo, estoy en casa. Gracias por ser mi hogar. Te amo eternamente. 🏡💗",
+            "Cada noche antes de dormir pienso en lo afortunado que soy de tenerte. Cada mañana despierto agradecido por otro día contigo. Te amo infinitamente. 🌙☀️",
+            "Mi cielo, tu sonrisa es mi debilidad. Tu risa es mi melodía favorita. Tu felicidad es mi prioridad. Te amo más de lo que imaginas. 😊💖",
+            "Amor, contigo aprendí que el amor verdadero es paciente, comprensivo, incondicional. Gracias por enseñarme lo que significa amar. Te amo. 📚💕",
+            "Hoy solo quiero decirte que eres extraordinario. Tu manera de ser, de pensar, de amar. Todo en ti me fascina. Te amo profundamente. 🌟💗",
+            "Mi vida, en tus brazos encontré mi lugar en el mundo. Contigo me siento seguro, amado, en paz. Gracias por ser mi refugio. Te amo. 🤗💖",
+            "Amor mío, cada día contigo es mejor que el anterior. Nuestro amor crece, se fortalece, se profundiza. Gracias por construir esto conmigo. Te amo. 📈💕",
+            "Mi cielo, eres mi razón para sonreír en los días grises, mi luz en la oscuridad, mi esperanza cuando todo parece perdido. Te amo infinitamente. 🌈💗",
+            "Amor, no importa cuántas veces te lo diga, nunca será suficiente: te amo. Hoy, mañana, siempre. Eres mi todo. 💖",
+            "Hoy quiero recordarte lo valioso que eres. Tu presencia ilumina mi vida de maneras que ni imaginas. Gracias por ser tú. Te amo profundamente. 💎💕",
+            "Mi vida, contigo descubrí que el amor verdadero no es perfecto, pero es real. Y lo nuestro es lo más real que tengo. Te amo eternamente. 💗",
+            "Amor mío, eres mi mejor decisión, mi mayor aventura, mi más grande amor. Gracias por elegirme también. Te amo con todo mi corazón. 🗺️💖",
+            "Cada momento contigo es una página de nuestra historia de amor, y cada página es mi favorita. Gracias por escribir esto conmigo. Te amo. 📝💕",
+            "Mi cielo, tu amor me ha dado alas para volar. Tu apoyo me ha dado fuerzas para seguir. Tu fe en mí me ha dado confianza. Te amo infinitamente. 🦋💗",
+            "Amor, en este instante solo quiero que sepas que pienso en ti. Siempre. En cada momento del día, estás en mi mente y en mi corazón. Te amo. 💭💖",
+            "Hoy me di cuenta de que las mejores cosas de mi vida empiezan contigo: mi mejor día, mi mejor sonrisa, mi mejor versión. Te amo profundamente. 🌟💕",
+            "Mi vida, eres la razón por la que creo en los finales felices. Nuestra historia apenas comienza y ya es mi favorita. Te amo eternamente. 📖💗",
+            "Amor mío, gracias por amarme en mis días malos, por celebrar conmigo en los buenos, por estar siempre. Tu amor es mi mayor tesoro. Te amo. 💎💖",
+            "Mi cielo, contigo aprendí que el amor no se trata de encontrar a alguien perfecto, sino de ver perfección en alguien imperfecto. Te amo así. 💕",
+            "Amor, cada latido de mi corazón dice tu nombre. Cada respiración es un gracias por tenerte. Cada día es una oportunidad de amarte más. Te amo. 💓",
+            "Hoy quiero que sepas que eres mi sueño hecho realidad. Todo lo que alguna vez deseé lo encontré en ti. Gracias por existir. Te amo profundamente. 🌠💗",
+            "Mi vida, tu amor es el motor que me impulsa. Tu sonrisa es el sol que ilumina mi día. Tu presencia es mi mayor bendición. Te amo infinitamente. ☀️💖",
+            "Amor mío, en un mundo lleno de opciones, te elegiría mil veces más. Eres mi elección, hoy y siempre. Te amo con toda mi alma. 🎯💕",
+            "Mi cielo, gracias por ser mi compañero en esta aventura llamada vida. Contigo todo es más bonito, más fácil, más feliz. Te amo eternamente. 🚀💗",
+            "Amor, tu amor es mi inspiración, mi motivación, mi razón de ser. Gracias por darle sentido a mi vida. Te amo profundamente. 🎨💖",
+            "Hoy solo quiero decirte que eres mi milagro. La mejor cosa que me ha pasado. Mi mayor fortuna. Te amo más de lo que las palabras pueden decir. 🍀💕",
+            "Mi vida, cada día contigo es un regalo que desenvuelvo con emoción. Gracias por llenar mi vida de momentos hermosos. Te amo infinitamente. 🎁💗",
+            "Amor mío, eres mi refugio en los días de tormenta, mi alegría en los momentos de tristeza, mi luz en la oscuridad. Te amo con todo mi ser. 🏠💖",
+            "Mi cielo, tu amor me ha enseñado que la felicidad no es un destino, es un camino. Y quiero recorrerlo siempre de tu mano. Te amo eternamente. 🛤️💕",
+            "Amor, cada vez que pienso en el futuro, te veo en él. Cada plan, cada sueño, cada momento. Siempre eres tú. Te amo profundamente. 🔮💗",
+            "Hoy quiero agradecerte por tu paciencia, tu comprensión, tu amor incondicional. Eres un regalo del cielo. Te amo infinitamente. 🎁💖",
+            "Mi vida, contigo descubrí que el amor verdadero se construye día a día, en las pequeñas cosas, en los gestos simples. Te amo por todo eso. 🧱💕",
+            "Amor mío, eres mi razón para creer en lo bueno, en lo hermoso, en lo verdadero. Gracias por restaurar mi fe. Te amo eternamente. ✨💗",
+            "Mi cielo, tu amor es mi medicina en los días difíciles, mi celebración en los días buenos. Eres todo lo que necesito. Te amo profundamente. 💊💖",
+            "Amor, no hay palabras suficientes para expresar lo que siento por ti. Solo sé que mi corazón es tuyo, hoy y siempre. Te amo infinitamente. 💝",
+            "Hoy quiero recordarte que eres único. No hay nadie como tú, y eso es lo que más amo. Tu autenticidad, tu esencia. Te amo tal como eres. 🌟💕",
+            "Mi vida, cada momento a tu lado es una aventura. Gracias por hacer de lo ordinario algo extraordinario. Te amo eternamente. 🗺️💗",
+            "Amor mío, eres mi mejor amigo, mi confidente, mi amor. Todo lo que necesito en una persona lo encontré en ti. Te amo profundamente. 👥💖",
+            "Mi cielo, tu amor es mi fuerza en los momentos de debilidad, mi esperanza cuando todo parece perdido. Gracias por ser mi todo. Te amo. 💪💕",
+            "Amor, cada día a tu lado me recuerda por qué vale la pena amar. Gracias por ser la razón. Te amo infinitamente. 💗",
+            "Hoy solo quiero que sepas que eres mi prioridad. Tu felicidad, tu paz, tu amor. Todo lo tuyo es importante para mí. Te amo profundamente. 🎯💖",
+            "Mi vida, contigo aprendí que el amor no es complicado cuando es verdadero. Gracias por hacer todo tan simple y hermoso. Te amo eternamente. 💕",
+            "Amor mío, eres la respuesta a todas mis oraciones. El sueño que se hizo realidad. Mi mayor bendición. Te amo con toda mi alma. 🙏💗",
+            "Mi cielo, cada vez que te veo, mi corazón se acelera. Después de todo este tiempo, sigues haciéndome sentir mariposas. Te amo infinitamente. 🦋💖",
+            "Amor, gracias por amarme en mis mejores días y en los peores. Tu amor constante es mi mayor tesoro. Te amo profundamente. 💎💕",
+            "Hoy quiero decirte que eres mi inspiración. Todo lo bueno que hago es porque quiero hacerte sentir orgulloso. Te amo eternamente. 🌟💗",
+            "Mi vida, contigo descubrí que el amor verdadero crece con el tiempo. Cada día te amo más que el anterior. Te amo infinitamente. 📈💖",
+            "Amor mío, eres mi lugar seguro en este mundo caótico. Contigo me siento en paz, protegido, amado. Te amo con todo mi corazón. 🏡💕",
+            "Mi cielo, tu sonrisa es capaz de iluminar mi día más oscuro. Gracias por ser mi luz. Te amo profundamente. 💡💗",
+            "Amor, cada conversación contigo es mi favorita. No importa de qué hablemos, contigo todo es especial. Te amo eternamente. 💬💖",
+            "Hoy solo quiero agradecerte por ser tú. Auténtico, único, maravilloso. Gracias por ser parte de mi vida. Te amo infinitamente. 🌈💕",
+            "Mi vida, contigo aprendí que el amor verdadero no busca cambiar a la otra persona, la acepta y la ama tal como es. Te amo así. 💗",
+            "Amor mío, eres mi complemento perfecto. Donde yo tengo debilidades, tú tienes fortalezas. Juntos somos completos. Te amo profundamente. 🧩💖",
+            "Mi cielo, gracias por cada momento compartido, cada risa, cada abrazo, cada beso. Todo contigo es especial. Te amo eternamente. 💋💕",
+            "Amor, en tus ojos veo mi futuro, en tu sonrisa encuentro mi felicidad, en tus brazos hallo mi hogar. Te amo infinitamente. 👀💗",
+            "Hoy quiero recordarte que eres suficiente. Más que suficiente. Eres todo lo que necesito y más. Te amo profundamente. ✨💖",
+            "Mi vida, cada día contigo es una nueva razón para agradecer. Gracias por existir y por amarme. Te amo eternamente. 🙏💕",
+            "Amor mío, eres mi sueño más bonito, mi realidad más hermosa, mi amor más verdadero. Te amo con toda mi alma. 💭💗",
+            "Mi cielo, tu amor me ha transformado de maneras que nunca imaginé. Soy mejor persona gracias a ti. Te amo infinitamente. 🦋💖",
+            "Amor, no importa lo difícil que sea el camino, si lo recorro contigo, vale la pena. Gracias por ser mi compañero. Te amo profundamente. 🛤️💕",
+            "Hoy solo quiero decirte que mi amor por ti crece cada día. No tiene límites, no tiene fin. Es infinito, como tú. Te amo eternamente. ♾️💗",
+            "Mi vida, contigo descubrí que el verdadero amor no se encuentra, se construye. Y lo estamos construyendo hermoso. Te amo infinitamente. 🏗️💖"
+        ];
+
+        function generarCarta() {
+            const cartaTexto = document.getElementById('cartaGenerada');
+            const cartaAleatoria = cartasAleatorias[Math.floor(Math.random() * cartasAleatorias.length)];
+            
+            // Animación de borrado
+            cartaTexto.style.opacity = '0';
+            
+            setTimeout(() => {
+                cartaTexto.textContent = cartaAleatoria;
+                cartaTexto.style.opacity = '1';
+                cartaTexto.style.transition = 'opacity 0.8s ease';
+            }, 300);
+        }
+
+        // ===== CARTAS SORPRESA =====
+        function abrirCartaSorpresa(elemento) {
+            // Si ya está abierta, cerrarla
+            if (elemento.classList.contains('abierta')) {
+                elemento.classList.remove('abierta');
+            } else {
+                // Cerrar todas las demás cartas
+                document.querySelectorAll('.carta-sorpresa-card').forEach(carta => {
+                    carta.classList.remove('abierta');
+                });
+                // Abrir esta carta
+                elemento.classList.add('abierta');
+            }
+        }
+
+        // ===== YOUTUBE PLAYLISTS =====
+        function abrirYoutube(tipo) {
+            const enlaces = {
+                'playlist1': 'https://youtube.com/playlist?list=PL_eZ73OzSKsRGOe32EESS_rOEvUN3NGKY&si=lCmqfQK5261CuKjt',
+                'cancion1': 'https://www.youtube.com/watch?v=7m9kfeOa0YM', // We Are Bulletproof: The Eternal - BTS
+                'cancion2': 'https://www.youtube.com/watch?v=NMdTd9e-LEI', // I NEED U - BTS
+                'cancion3': 'https://www.youtube.com/watch?v=w_17gedEV0k', // ONLY - Lee Hi
+                'cancion4': 'https://www.youtube.com/watch?v=vRdZVDWs3BI'  // Polaroid Love - ENHYPEN
+            };
+            
+            if (enlaces[tipo]) {
+                window.open(enlaces[tipo], '_blank');
+            }
+        }
+
+        // ===== CARRUSEL DE FOTOS =====
+        let fotoActual = 0;
+        const leyendas = [
+            'Nuestro primer momento juntos 💕',
+            'Cuando todo comenzó 💗',
+            'Risas y momentos inolvidables ✨',
+            'Juntos contra el mundo 🌟',
+            'Y muchos más momentos por vivir 💝'
+        ];
+
+        function inicializarCarrusel() {
+            const fotos = document.querySelectorAll('.carrusel-foto');
+            const indicadores = document.getElementById('carruselIndicadores');
+            indicadores.innerHTML = '';
+            
+            fotos.forEach((_, index) => {
+                const punto = document.createElement('div');
+                punto.className = 'carrusel-punto' + (index === 0 ? ' activo' : '');
+                punto.onclick = () => irAFoto(index);
+                indicadores.appendChild(punto);
+            });
+        }
+
+        function cambiarFoto(direccion) {
+            const fotos = document.querySelectorAll('.carrusel-foto');
+            const puntos = document.querySelectorAll('.carrusel-punto');
+            
+            fotos[fotoActual].classList.remove('activa');
+            puntos[fotoActual].classList.remove('activo');
+            
+            fotoActual = (fotoActual + direccion + fotos.length) % fotos.length;
+            
+            fotos[fotoActual].classList.add('activa');
+            puntos[fotoActual].classList.add('activo');
+            
+            document.getElementById('fotoLeyenda').textContent = leyendas[fotoActual];
+        }
+
+        function irAFoto(index) {
+            const fotos = document.querySelectorAll('.carrusel-foto');
+            const puntos = document.querySelectorAll('.carrusel-punto');
+            
+            fotos[fotoActual].classList.remove('activa');
+            puntos[fotoActual].classList.remove('activo');
+            
+            fotoActual = index;
+            
+            fotos[fotoActual].classList.add('activa');
+            puntos[fotoActual].classList.add('activo');
+            
+            document.getElementById('fotoLeyenda').textContent = leyendas[fotoActual];
+        }
+
+        // Auto-avanzar carrusel cada 5 segundos
+        setInterval(() => {
+            if (document.getElementById('seccionAlbum').classList.contains('activa')) {
+                cambiarFoto(1);
+            }
+        }, 5000);
+
+        // ===== TOGGLE POEMA =====
+        function togglePoema(elemento) {
+            elemento.classList.toggle('expandido');
+        }
+
+        // ===== ABRAZAR PERSONAJES =====
+        let abrazados = false;
+        const frases = [
+            "Juntos somos invencibles 💕",
+            "Tu amor es mi fuerza 💗",
+            "Contigo, todo es mejor 🌟",
+            "Eres mi persona favorita 💝",
+            "Nuestro amor es eterno ✨"
+        ];
+
+        function abrazarPersonajes() {
+            const container = document.getElementById('personajesContainer');
+            const frase = document.getElementById('fraseRomantica');
+            
+            if (!abrazados) {
+                container.classList.add('abrazados');
+                frase.textContent = frases[Math.floor(Math.random() * frases.length)];
+                frase.classList.add('visible');
+                abrazados = true;
+            } else {
+                container.classList.remove('abrazados');
+                frase.classList.remove('visible');
+                abrazados = false;
+            }
+        }
+
+        // ===== TOGGLE DETALLE =====
+        function toggleDetalle(elemento) {
+            // Cerrar todos los demás
+            document.querySelectorAll('.detalle-card').forEach(card => {
+                if (card !== elemento) {
+                    card.classList.remove('activo');
+                }
+            });
+            
+            elemento.classList.toggle('activo');
+        }
+
+        // ===== MODAL =====
+        function abrirModal(texto) {
+            const modal = document.getElementById('modal');
+            const modalTexto = document.getElementById('modalTexto');
+            modalTexto.textContent = texto;
+            modal.classList.add('activo');
+        }
+
+        function cerrarModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('activo');
+        }
+
+        // ===== EFECTOS AL CARGAR =====
+        window.addEventListener('load', () => {
+            // Animaciones iniciales ya están en CSS
+        });
+
+        // ===== CERRAR MODAL AL HACER CLIC FUERA =====
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') {
+                cerrarModal();
+            }
+        });
+    </script>
+</body>
+</html>
